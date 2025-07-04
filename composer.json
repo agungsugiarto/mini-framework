@@ -59,12 +59,12 @@
         "symfony/error-handler": "^6.0",
         "symfony/mime": "^6.0",
         "symfony/var-dumper": "^6.0",
-        "vlucas/phpdotenv": "^5.4.1"
+        "vlucas/phpdotenv": "^5.4.1",
+        "psr/http-server-middleware": "^1.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.4",
-        "phpunit/phpunit": "^9.5.8",
-        "psr/http-server-middleware": "*"
+        "phpunit/phpunit": "^9.5.8"
     },
     "suggest": {
         "laravel/tinker": "Required to use the tinker console command (^2.7)."
