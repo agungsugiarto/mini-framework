@@ -23,6 +23,7 @@ use Mini\Framework\Exceptions\NotFoundHttpException;
 use Mini\Framework\Http\ServerRequest;
 use Mini\Framework\Http\ServerRequestFactory;
 use Mini\Framework\Routing\Controller;
+use Mini\Framework\Routing\MiddlewareHandler;
 use Mini\Framework\Routing\Pipeline;
 use Mini\Framework\Routing\RoutingClosure;
 use Psr\Http\Message\RequestInterface;
@@ -416,17 +417,7 @@ trait RoutesRequests
             // Transform middleware to work with Laravel Pipeline using PSR-15 pattern
             $transformedMiddleware = array_map(fn ($middlewareName) => fn ($request, $next) => $this->resolveMiddleware($middlewareName)->process(
                     $request,
-                    new class($next) implements RequestHandlerInterface
-                    {
-                        public function __construct(private $next)
-                        {
-                        }
-
-                        public function handle(ServerRequestInterface $request): ResponseInterface
-                        {
-                            return ($this->next)($request);
-                        }
-                    }
+                    new MiddlewareHandler($next)
                 ),
                 $middleware
             );
