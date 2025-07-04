@@ -425,27 +425,51 @@ trait RoutesRequests
      */
     public function prepareResponse($response)
     {
-        if ($response instanceof Model) {
-            $response = new JsonResponse($response, 201);
-        } elseif ($response instanceof Stringable) {
-            $response = (new ResponseFactory)->createResponse()
-                ->withBody((new StreamFactory)->createStream($response->__toString()));
-        } elseif (! $response instanceof ResponseInterface &&
-            ($response instanceof Arrayable ||
-             $response instanceof Jsonable ||
-             $response instanceof ArrayObject ||
-             $response instanceof JsonSerializable ||
-             $response instanceof stdClass ||
-             is_array($response))) {
-            $response = new JsonResponse($response);
-        } elseif (empty($response)) {
-            $response = new EmptyResponse();
-        } elseif (! $response instanceof ResponseInterface) {
-            $response = (new ResponseFactory)->createResponse()
-                ->withBody((new StreamFactory)->createStream($response));
+        // Return early if already a valid ResponseInterface
+        if ($response instanceof ResponseInterface) {
+            return $response;
         }
 
-        return $response;
+        // Handle Model instances with 201 status
+        if ($response instanceof Model) {
+            return new JsonResponse($response, 201);
+        }
+
+        // Handle empty responses
+        if (empty($response)) {
+            return new EmptyResponse();
+        }
+
+        // Handle JSON-serializable types
+        if ($this->isJsonSerializable($response)) {
+            return new JsonResponse($response);
+        }
+
+        // Handle Stringable objects and everything else as text response
+        $responseFactory = new ResponseFactory();
+        $streamFactory = new StreamFactory();
+        
+        $content = $response instanceof Stringable ? $response->__toString() : (string) $response;
+        
+        return $responseFactory->createResponse()
+            ->withBody($streamFactory->createStream($content));
+    }
+
+    /**
+     * Determine if the response is JSON-serializable.
+     *
+     * @param mixed $response
+     *
+     * @return bool
+     */
+    private function isJsonSerializable($response): bool
+    {
+        return $response instanceof Arrayable ||
+               $response instanceof Jsonable ||
+               $response instanceof ArrayObject ||
+               $response instanceof JsonSerializable ||
+               $response instanceof stdClass ||
+               is_array($response);
     }
 
     /**
