@@ -12,7 +12,7 @@ class UrlGenerator
     /**
      * The application instance.
      *
-     * @var \Mini\Framework\Application
+     * @var Application
      */
     protected $app;
 

@@ -46,7 +46,7 @@ class UndefinedViewVariableSolutionProvider implements HasSolutionsForThrowable
     }
 
     /**
-     * @return array<int, \Spatie\Ignition\Contracts\Solution>
+     * @return array<int, Solution>
      */
     protected function findCorrectVariableSolutions(
         ViewException $throwable,

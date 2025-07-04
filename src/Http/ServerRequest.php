@@ -24,7 +24,7 @@ class ServerRequest extends BaseServerRequest
     /**
      * The route resolver callback.
      *
-     * @var \Closure
+     * @var Closure
      */
     protected $routeResolver;
 
@@ -112,7 +112,7 @@ class ServerRequest extends BaseServerRequest
     /**
      * Get the route resolver callback.
      *
-     * @return \Closure
+     * @return Closure
      */
     public function getRouteResolver()
     {

@@ -10,7 +10,7 @@ class HttpResponseException extends RuntimeException
     /**
      * The underlying response instance.
      *
-     * @var \Laminas\Diactoros\Response
+     * @var Response
      */
     protected $response;
 
@@ -27,7 +27,7 @@ class HttpResponseException extends RuntimeException
     /**
      * Get the underlying response instance.
      *
-     * @return \Laminas\Diactoros\Response
+     * @return Response
      */
     public function getResponse()
     {

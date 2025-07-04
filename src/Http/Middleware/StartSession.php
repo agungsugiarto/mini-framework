@@ -17,7 +17,7 @@ class StartSession implements MiddlewareInterface
     /**
      * The session manager.
      *
-     * @var \Illuminate\Session\SessionManager
+     * @var SessionManager
      */
     protected $manager;
 
@@ -60,9 +60,6 @@ class StartSession implements MiddlewareInterface
 
     /**
      * Check if the request has a route.
-     *
-     * @param ServerRequestInterface $request
-     * @return bool
      */
     protected function hasRoute(ServerRequestInterface $request): bool
     {
@@ -72,9 +69,7 @@ class StartSession implements MiddlewareInterface
     /**
      * Handle the given request within session state.
      *
-     * @param \Illuminate\Contracts\Session\Session $session
-     *
-     * @return ResponseInterface
+     * @param Session $session
      */
     protected function handleRequestWhileBlocking(ServerRequestInterface $request, $session, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -100,9 +95,7 @@ class StartSession implements MiddlewareInterface
     /**
      * Handle the given request within session state.
      *
-     * @param \Illuminate\Contracts\Session\Session $session
-     *
-     * @return ResponseInterface
+     * @param Session $session
      */
     protected function handleStatefulRequest(ServerRequestInterface $request, $session, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -130,9 +123,9 @@ class StartSession implements MiddlewareInterface
     /**
      * Start the session for the given request.
      *
-     * @param \Illuminate\Contracts\Session\Session $session
+     * @param Session $session
      *
-     * @return \Illuminate\Contracts\Session\Session
+     * @return Session
      */
     protected function startSession(ServerRequestInterface $request, $session)
     {
@@ -146,7 +139,7 @@ class StartSession implements MiddlewareInterface
     /**
      * Get the session implementation from the manager.
      *
-     * @return \Illuminate\Contracts\Session\Session
+     * @return Session
      */
     public function getSession(ServerRequestInterface $request)
     {
@@ -185,7 +178,7 @@ class StartSession implements MiddlewareInterface
     /**
      * Store the current URL for the request if necessary.
      *
-     * @param \Illuminate\Contracts\Session\Session $session
+     * @param Session $session
      *
      * @return void
      */
@@ -200,8 +193,6 @@ class StartSession implements MiddlewareInterface
 
     /**
      * Add the session cookie to the application response.
-     *
-     * @return ResponseInterface
      */
     protected function addCookieToResponse(ResponseInterface $response, Session $session): ResponseInterface
     {

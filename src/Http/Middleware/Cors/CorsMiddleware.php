@@ -4,8 +4,8 @@ namespace Mini\Framework\Http\Middleware\Cors;
 
 use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class CorsMiddleware implements MiddlewareInterface
@@ -92,6 +92,7 @@ class CorsMiddleware implements MiddlewareInterface
         if (isset($paths[$host])) {
             return $paths[$host];
         }
+
         // Defaults
         return array_filter($paths, function ($path) {
             return is_string($path);

@@ -286,7 +286,7 @@ trait MakesHttpRequests
     /**
      * Validate and return the decoded response JSON.
      *
-     * @return \Illuminate\Testing\AssertableJsonString
+     * @return AssertableJsonString
      *
      * @throws \Throwable
      */

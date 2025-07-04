@@ -29,11 +29,11 @@ class Handler implements ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param \Throwable|HttpExceptionInterface $e
+     * @param Throwable|HttpExceptionInterface $e
      *
      * @return void
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function report(Throwable $e)
     {
@@ -59,7 +59,7 @@ class Handler implements ExceptionHandler
     /**
      * Determine if the exception should be reported.
      *
-     * @param \Throwable|HttpExceptionInterface $e
+     * @param Throwable|HttpExceptionInterface $e
      *
      * @return bool
      */
@@ -71,7 +71,7 @@ class Handler implements ExceptionHandler
     /**
      * Determine if the exception is in the "do not report" list.
      *
-     * @param \Throwable|HttpExceptionInterface $e
+     * @param Throwable|HttpExceptionInterface $e
      *
      * @return bool
      */
@@ -90,11 +90,11 @@ class Handler implements ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Throwable|HttpExceptionInterface        $e
+     * @param Throwable|HttpExceptionInterface         $e
      *
      * @return \Psr\Http\Message\ResponseInterface
      *
-     * @throws \Throwable|HttpExceptionInterface
+     * @throws Throwable|HttpExceptionInterface
      */
     public function render($request, Throwable $e)
     {
@@ -119,7 +119,7 @@ class Handler implements ExceptionHandler
      * Prepare a JSON response for the given exception.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Throwable|HttpExceptionInterface        $e
+     * @param Throwable|HttpExceptionInterface         $e
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -136,7 +136,7 @@ class Handler implements ExceptionHandler
     /**
      * Convert the given exception to an array.
      *
-     * @param \Throwable|HttpExceptionInterface $e
+     * @param Throwable|HttpExceptionInterface $e
      *
      * @return array
      */
@@ -159,7 +159,7 @@ class Handler implements ExceptionHandler
      * Prepare a response for the given exception.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Throwable|HttpExceptionInterface        $e
+     * @param Throwable|HttpExceptionInterface         $e
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -205,8 +205,8 @@ class Handler implements ExceptionHandler
     /**
      * Render an exception to a string using Symfony.
      *
-     * @param \Throwable|HttpExceptionInterface $e
-     * @param bool                              $debug
+     * @param Throwable|HttpExceptionInterface $e
+     * @param bool                             $debug
      *
      * @return string
      */
@@ -221,7 +221,7 @@ class Handler implements ExceptionHandler
      * Render an exception to the console.
      *
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Throwable|HttpExceptionInterface                 $e
+     * @param Throwable|HttpExceptionInterface                  $e
      *
      * @return void
      */
@@ -250,7 +250,7 @@ class Handler implements ExceptionHandler
     /**
      * Determine if the given exception is an HTTP exception.
      *
-     * @param \Throwable|HttpExceptionInterface $e
+     * @param Throwable|HttpExceptionInterface $e
      *
      * @return bool
      */

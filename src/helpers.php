@@ -43,8 +43,8 @@ if (! function_exists('abort')) {
      *
      * @return void
      *
-     * @throws \Mini\Framework\Exceptions\HttpException
-     * @throws \Mini\Framework\Exceptions\NotFoundException
+     * @throws Mini\Framework\Exceptions\HttpException
+     * @throws Mini\Framework\Exceptions\NotFoundException
      */
     function abort($code, $message = '', array $headers = [])
     {
@@ -62,8 +62,8 @@ if (! function_exists('abort_if')) {
      *
      * @return void
      *
-     * @throws \Mini\Framework\Exceptions\HttpException
-     * @throws \Mini\Framework\Exceptions\NotFoundException
+     * @throws Mini\Framework\Exceptions\HttpException
+     * @throws Mini\Framework\Exceptions\NotFoundException
      */
     function abort_if($boolean, $code, $message = '', array $headers = [])
     {
@@ -83,8 +83,8 @@ if (! function_exists('abort_unless')) {
      *
      * @return void
      *
-     * @throws \Mini\Framework\Exceptions\HttpException
-     * @throws \Mini\Framework\Exceptions\NotFoundException
+     * @throws Mini\Framework\Exceptions\HttpException
+     * @throws Mini\Framework\Exceptions\NotFoundException
      */
     function abort_unless($boolean, $code, $message = '', array $headers = [])
     {
@@ -100,7 +100,7 @@ if (! function_exists('app')) {
      *
      * @param string|null $make
      *
-     * @return mixed|\Mini\Framework\Application
+     * @return mixed|Mini\Framework\Application
      */
     function app($make = null, array $parameters = [])
     {
@@ -132,7 +132,7 @@ if (! function_exists('broadcast')) {
      *
      * @param mixed|null $event
      *
-     * @return \Illuminate\Broadcasting\PendingBroadcast
+     * @return Illuminate\Broadcasting\PendingBroadcast
      */
     function broadcast($event = null)
     {
@@ -293,8 +293,6 @@ if (! function_exists('report')) {
     /**
      * Report an exception.
      *
-     * @param \Throwable $exception
-     *
      * @return void
      */
     function report(Throwable $exception)
@@ -342,7 +340,7 @@ if (! function_exists('session')) {
      * @param array|string|null $key
      * @param mixed             $default
      *
-     * @return mixed|\Illuminate\Session\Store|\Illuminate\Session\SessionManager
+     * @return mixed|Illuminate\Session\Store|Illuminate\Session\SessionManager
      */
     function session($key = null, $default = null)
     {
@@ -380,7 +378,7 @@ if (! function_exists('trans')) {
      * @param array       $replace
      * @param string|null $locale
      *
-     * @return \Illuminate\Contracts\Translation\Translator|string|array|null
+     * @return Illuminate\Contracts\Translation\Translator|string|array|null
      */
     function trans($id = null, $replace = [], $locale = null)
     {
@@ -412,9 +410,9 @@ if (! function_exists('trans_choice')) {
     /**
      * Translates the given message based on a count.
      *
-     * @param string               $id
-     * @param int|array|\Countable $number
-     * @param string|null          $locale
+     * @param string              $id
+     * @param int|array|Countable $number
+     * @param string|null         $locale
      *
      * @return string
      */
@@ -444,7 +442,7 @@ if (! function_exists('validator')) {
     /**
      * Create a new Validator instance.
      *
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return Illuminate\Contracts\Validation\Validator
      */
     function validator(array $data = [], array $rules = [], array $messages = [], array $customAttributes = [])
     {
@@ -466,7 +464,7 @@ if (! function_exists('view')) {
      * @param array  $data
      * @param array  $mergeData
      *
-     * @return \Illuminate\View\View
+     * @return Illuminate\View\View
      */
     function view($view = null, $data = [], $mergeData = [])
     {
@@ -494,13 +492,13 @@ if (! function_exists('invade')) {
             /** @var object */
             public $object;
 
-            /** @var \ReflectionClass */
+            /** @var ReflectionClass */
             public $reflected;
 
             public function __construct(object $object)
             {
                 $this->object = $object;
-                $this->reflected = new \ReflectionClass($object);
+                $this->reflected = new ReflectionClass($object);
             }
 
             public function __get($name)
@@ -758,7 +756,7 @@ if (! function_exists('marshalHeadersFromSapi')) {
 
                 return isset($contentHeaders[$key]);
             }
-            : static fn (string $key): bool => str_starts_with($key, 'CONTENT_');
+        : static fn (string $key): bool => str_starts_with($key, 'CONTENT_');
 
         $headers = [];
         foreach ($server as $key => $value) {

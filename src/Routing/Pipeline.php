@@ -18,7 +18,7 @@ class Pipeline extends BasePipeline
     /**
      * Get a Closure that represents a slice of the application onion.
      *
-     * @return \Closure
+     * @return BaseClosure
      */
     protected function carry()
     {
@@ -38,7 +38,7 @@ class Pipeline extends BasePipeline
     /**
      * Get the initial slice to begin the stack call.
      *
-     * @return \Closure
+     * @return BaseClosure
      */
     protected function prepareDestination(BaseClosure $destination)
     {

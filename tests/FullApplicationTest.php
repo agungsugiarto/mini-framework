@@ -211,7 +211,8 @@ class FullApplicationTest extends TestCase
 
     public function testTerminableGlobalMiddleware()
     {
-        $app = new class extends Application {
+        $app = new class extends Application
+        {
             public function callTerminableMiddlewarePublic($response)
             {
                 return $this->callTerminableMiddleware($response);
@@ -307,7 +308,7 @@ class FullApplicationTest extends TestCase
         $mock->shouldIgnoreMissing();
 
         $app->router->get('/', function () {
-            throw new \RuntimeException('app exception');
+            throw new RuntimeException('app exception');
         });
 
         $response = $app->handle((new ServerRequestFactory)->createServerRequest('GET', '/'));
@@ -407,7 +408,7 @@ class FullApplicationTest extends TestCase
     public function testApplicationBootsOnlyOnce()
     {
         $app = new Application();
-        $provider = new class($app) extends \Illuminate\Support\ServiceProvider
+        $provider = new class($app) extends Illuminate\Support\ServiceProvider
         {
             public $bootCount = 0;
 
@@ -867,7 +868,7 @@ class FullApplicationTest extends TestCase
         // Bind the session manager to the container
         $app->instance('Illuminate\Session\SessionManager', $sessionManager);
 
-        $app->middleware([\Mini\Framework\Http\Middleware\StartSession::class]);
+        $app->middleware([Mini\Framework\Http\Middleware\StartSession::class]);
 
         $app->router->get('/', function () {
             return 'Hello World';
@@ -889,7 +890,7 @@ class FullApplicationTest extends TestCase
 
         $app->instance('Illuminate\Session\SessionManager', $sessionManager);
 
-        $app->middleware([\Mini\Framework\Http\Middleware\StartSession::class]);
+        $app->middleware([Mini\Framework\Http\Middleware\StartSession::class]);
 
         $app->router->get('/', function () {
             return 'Session Not Configured';
@@ -910,12 +911,12 @@ class FullApplicationTest extends TestCase
 
         // Return a config that indicates session is configured but with minimal driver
         $sessionManager->shouldReceive('getSessionConfig')->andReturn([
-            'driver' => null  // This will make sessionConfigured() return false
+            'driver' => null,  // This will make sessionConfigured() return false
         ]);
 
         $app->instance('Illuminate\Session\SessionManager', $sessionManager);
 
-        $app->middleware([\Mini\Framework\Http\Middleware\StartSession::class]);
+        $app->middleware([Mini\Framework\Http\Middleware\StartSession::class]);
 
         $app->router->get('/', function () {
             return 'Minimal Session Test';
@@ -955,6 +956,7 @@ class FullApplicationTest extends TestCase
         $app->router->get('/', function (ServerRequest $request) {
             // Check if middleware modified the request
             $data = $request->getAttribute('middleware-data', 'not-found');
+
             return "Request data: $data";
         });
 
@@ -989,11 +991,12 @@ class FullApplicationTest extends TestCase
         $app->middleware([
             MiniTestModifyRequestMiddleware::class,
             MiniTestBeforeMiddleware::class,
-            MiniTestModifyResponseMiddleware::class
+            MiniTestModifyResponseMiddleware::class,
         ]);
 
         $app->router->get('/', function (ServerRequest $request) {
             $data = $request->getAttribute('middleware-data', 'none');
+
             return "Data: $data";
         });
 
@@ -1013,7 +1016,7 @@ class FullApplicationTest extends TestCase
 
         $app->routeMiddleware([
             'modify-request' => MiniTestModifyRequestMiddleware::class,
-            'modify-response' => MiniTestModifyResponseMiddleware::class
+            'modify-response' => MiniTestModifyResponseMiddleware::class,
         ]);
 
         // Route without middleware
@@ -1024,6 +1027,7 @@ class FullApplicationTest extends TestCase
         // Route with middleware - ensure proper order: request modification first, then response
         $app->router->get('/modified', ['middleware' => 'modify-request|modify-response', function (ServerRequest $request) {
             $data = $request->getAttribute('middleware-data', 'none');
+
             return "Modified: $data";
         }]);
 
@@ -1055,8 +1059,9 @@ class FullApplicationTest extends TestCase
         $app = new Application;
 
         // Create a conditional middleware inline
-        $conditionalMiddleware = new class implements \Psr\Http\Server\MiddlewareInterface {
-            public function process(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): \Psr\Http\Message\ResponseInterface
+        $conditionalMiddleware = new class implements Psr\Http\Server\MiddlewareInterface
+        {
+            public function process(ServerRequestInterface $request, Psr\Http\Server\RequestHandlerInterface $handler): Psr\Http\Message\ResponseInterface
             {
                 // Check if request has special header
                 if ($request->hasHeader('X-Special-Request')) {
@@ -1080,6 +1085,7 @@ class FullApplicationTest extends TestCase
 
         $app->router->get('/', function (ServerRequest $request) {
             $special = $request->getAttribute('special', 'false');
+
             return "Special: $special";
         });
 
@@ -1103,7 +1109,8 @@ class FullApplicationTest extends TestCase
         $terminationLog = [];
 
         // Create a terminable middleware that logs termination
-        $terminableMiddleware = new class($terminationLog) implements \Psr\Http\Server\MiddlewareInterface {
+        $terminableMiddleware = new class($terminationLog) implements Psr\Http\Server\MiddlewareInterface
+        {
             private $log;
 
             public function __construct(&$log)
@@ -1111,9 +1118,10 @@ class FullApplicationTest extends TestCase
                 $this->log = &$log;
             }
 
-            public function process(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): \Psr\Http\Message\ResponseInterface
+            public function process(ServerRequestInterface $request, Psr\Http\Server\RequestHandlerInterface $handler): Psr\Http\Message\ResponseInterface
             {
                 $this->log[] = 'process';
+
                 return $handler->handle($request);
             }
 
@@ -1124,8 +1132,10 @@ class FullApplicationTest extends TestCase
             }
         };
 
-        $app = new class($terminableMiddleware, $terminationLog) extends Application {
+        $app = new class($terminableMiddleware, $terminationLog) extends Application
+        {
             private $terminableMiddleware;
+
             private $terminationLog;
 
             public function __construct($middleware, &$log)
@@ -1173,7 +1183,8 @@ class FullApplicationTest extends TestCase
         $terminationLog = [];
 
         // Create a terminable middleware that logs both process and terminate calls
-        $terminableMiddleware = new class($terminationLog) implements \Psr\Http\Server\MiddlewareInterface {
+        $terminableMiddleware = new class($terminationLog) implements Psr\Http\Server\MiddlewareInterface
+        {
             private $log;
 
             public function __construct(&$log)
@@ -1181,25 +1192,29 @@ class FullApplicationTest extends TestCase
                 $this->log = &$log;
             }
 
-            public function process(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): \Psr\Http\Message\ResponseInterface
+            public function process(ServerRequestInterface $request, Psr\Http\Server\RequestHandlerInterface $handler): Psr\Http\Message\ResponseInterface
             {
                 $this->log[] = 'middleware-process';
                 $response = $handler->handle($request);
                 $this->log[] = 'middleware-after-handler';
+
                 return $response;
             }
 
             public function terminate($request, $response)
             {
                 $this->log[] = 'middleware-terminate';
-                $this->log[] = 'response-status-' . $response->getStatusCode();
+                $this->log[] = 'response-status-'.$response->getStatusCode();
             }
         };
 
         // Create an application subclass that tracks termination without emitting response
-        $app = new class($terminableMiddleware, $terminationLog) extends Application {
+        $app = new class($terminableMiddleware, $terminationLog) extends Application
+        {
             private $terminableMiddleware;
+
             private $terminationLog;
+
             private $terminated = false;
 
             public function __construct($middleware, &$log)
@@ -1248,7 +1263,7 @@ class FullApplicationTest extends TestCase
             'middleware-process',
             'middleware-after-handler',
             'middleware-terminate',
-            'response-status-200'
+            'response-status-200',
         ];
 
         $this->assertEquals($expectedLog, $app->getTerminationLog());
@@ -1259,7 +1274,8 @@ class FullApplicationTest extends TestCase
     public function testTerminableMiddlewareWithParametersAndTermination()
     {
         // Create a simple test to verify that parameterized terminable middleware works
-        $app = new class extends Application {
+        $app = new class extends Application
+        {
             public $terminationLog = [];
 
             public function callTerminableMiddlewarePublic($response)
@@ -1336,17 +1352,17 @@ class LumenTestControllerWithMiddleware extends Mini\Framework\Routing\Controlle
     }
 }
 
-class MiniTestMiddleware implements \Psr\Http\Server\MiddlewareInterface
+class MiniTestMiddleware implements Psr\Http\Server\MiddlewareInterface
 {
-    public function process(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): \Psr\Http\Message\ResponseInterface
+    public function process(ServerRequestInterface $request, Psr\Http\Server\RequestHandlerInterface $handler): Psr\Http\Message\ResponseInterface
     {
         return new TextResponse('Middleware');
     }
 }
 
-class MiniTestPlainMiddleware implements \Psr\Http\Server\MiddlewareInterface
+class MiniTestPlainMiddleware implements Psr\Http\Server\MiddlewareInterface
 {
-    public function process(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): \Psr\Http\Message\ResponseInterface
+    public function process(ServerRequestInterface $request, Psr\Http\Server\RequestHandlerInterface $handler): Psr\Http\Message\ResponseInterface
     {
         $response = $handler->handle($request);
         $_SERVER['__middleware.response'] = $response instanceof Response;
@@ -1355,9 +1371,9 @@ class MiniTestPlainMiddleware implements \Psr\Http\Server\MiddlewareInterface
     }
 }
 
-class MiniTestBeforeMiddleware implements \Psr\Http\Server\MiddlewareInterface
+class MiniTestBeforeMiddleware implements Psr\Http\Server\MiddlewareInterface
 {
-    public function process(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): \Psr\Http\Message\ResponseInterface
+    public function process(ServerRequestInterface $request, Psr\Http\Server\RequestHandlerInterface $handler): Psr\Http\Message\ResponseInterface
     {
         // Before logic - add a header to the request
         $request = $request->withHeader('X-Before-Middleware', 'executed');
@@ -1370,9 +1386,9 @@ class MiniTestBeforeMiddleware implements \Psr\Http\Server\MiddlewareInterface
     }
 }
 
-class MiniTestModifyRequestMiddleware implements \Psr\Http\Server\MiddlewareInterface
+class MiniTestModifyRequestMiddleware implements Psr\Http\Server\MiddlewareInterface
 {
-    public function process(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): \Psr\Http\Message\ResponseInterface
+    public function process(ServerRequestInterface $request, Psr\Http\Server\RequestHandlerInterface $handler): Psr\Http\Message\ResponseInterface
     {
         // Modify request before passing to handler
         $request = $request->withAttribute('middleware-data', 'modified-by-middleware');
@@ -1381,9 +1397,9 @@ class MiniTestModifyRequestMiddleware implements \Psr\Http\Server\MiddlewareInte
     }
 }
 
-class MiniTestModifyResponseMiddleware implements \Psr\Http\Server\MiddlewareInterface
+class MiniTestModifyResponseMiddleware implements Psr\Http\Server\MiddlewareInterface
 {
-    public function process(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): \Psr\Http\Message\ResponseInterface
+    public function process(ServerRequestInterface $request, Psr\Http\Server\RequestHandlerInterface $handler): Psr\Http\Message\ResponseInterface
     {
         // Get response from handler
         $response = $handler->handle($request);
@@ -1393,13 +1409,14 @@ class MiniTestModifyResponseMiddleware implements \Psr\Http\Server\MiddlewareInt
         $response->getBody()->rewind();
 
         return $response->withHeader('X-Modified-By', 'response-middleware')
-                       ->withBody((new StreamFactory)->createStream($originalBody . ' - Modified'));
+                       ->withBody((new StreamFactory)->createStream($originalBody.' - Modified'));
     }
 }
 
-class MiniTestParameterizedMiddleware implements \Psr\Http\Server\MiddlewareInterface
+class MiniTestParameterizedMiddleware implements Psr\Http\Server\MiddlewareInterface
 {
     private $parameter1;
+
     private $parameter2;
 
     public function __construct($parameter1 = null, $parameter2 = null)
@@ -1408,7 +1425,7 @@ class MiniTestParameterizedMiddleware implements \Psr\Http\Server\MiddlewareInte
         $this->parameter2 = $parameter2;
     }
 
-    public function process(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): \Psr\Http\Message\ResponseInterface
+    public function process(ServerRequestInterface $request, Psr\Http\Server\RequestHandlerInterface $handler): Psr\Http\Message\ResponseInterface
     {
         return new TextResponse("Middleware - {$this->parameter1} - {$this->parameter2}");
     }
@@ -1434,9 +1451,9 @@ class UserFacade
 {
 }
 
-class MiniTestTerminateMiddleware implements \Psr\Http\Server\MiddlewareInterface
+class MiniTestTerminateMiddleware implements Psr\Http\Server\MiddlewareInterface
 {
-    public function process(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): \Psr\Http\Message\ResponseInterface
+    public function process(ServerRequestInterface $request, Psr\Http\Server\RequestHandlerInterface $handler): Psr\Http\Message\ResponseInterface
     {
         return $handler->handle($request);
     }
@@ -1444,13 +1461,13 @@ class MiniTestTerminateMiddleware implements \Psr\Http\Server\MiddlewareInterfac
     public function terminate($request, $response)
     {
         // Set a global flag to indicate terminate was called
-        if (!defined('TERMINATE_MIDDLEWARE_CALLED')) {
+        if (! defined('TERMINATE_MIDDLEWARE_CALLED')) {
             define('TERMINATE_MIDDLEWARE_CALLED', true);
         }
     }
 }
 
-class ResponsableResponse implements \Illuminate\Contracts\Support\Responsable
+class ResponsableResponse implements Illuminate\Contracts\Support\Responsable
 {
     public function toResponse($request)
     {
@@ -1468,9 +1485,10 @@ class SendEmails extends Command
     }
 }
 
-class MiniTestParameterizedTerminableMiddleware implements \Psr\Http\Server\MiddlewareInterface
+class MiniTestParameterizedTerminableMiddleware implements Psr\Http\Server\MiddlewareInterface
 {
     private $parameter1;
+
     private $parameter2;
 
     public function __construct($parameter1 = null, $parameter2 = null)
@@ -1479,7 +1497,7 @@ class MiniTestParameterizedTerminableMiddleware implements \Psr\Http\Server\Midd
         $this->parameter2 = $parameter2;
     }
 
-    public function process(\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Server\RequestHandlerInterface $handler): \Psr\Http\Message\ResponseInterface
+    public function process(ServerRequestInterface $request, Psr\Http\Server\RequestHandlerInterface $handler): Psr\Http\Message\ResponseInterface
     {
         return new TextResponse("Parameterized Terminable - {$this->parameter1} - {$this->parameter2}");
     }
@@ -1487,10 +1505,10 @@ class MiniTestParameterizedTerminableMiddleware implements \Psr\Http\Server\Midd
     public function terminate($request, $response)
     {
         // Use global constants for testing (this is just for test verification)
-        if (!defined('PARAMETERIZED_TERMINATE_CALLED')) {
+        if (! defined('PARAMETERIZED_TERMINATE_CALLED')) {
             define('PARAMETERIZED_TERMINATE_CALLED', true);
         }
-        if (!defined('PARAMETERIZED_TERMINATE_VALUE')) {
+        if (! defined('PARAMETERIZED_TERMINATE_VALUE')) {
             define('PARAMETERIZED_TERMINATE_VALUE', "{$this->parameter1}-{$this->parameter2}");
         }
     }

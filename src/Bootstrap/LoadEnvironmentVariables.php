@@ -59,7 +59,7 @@ class LoadEnvironmentVariables
     /**
      * Create a Dotenv instance.
      *
-     * @return \Dotenv\Dotenv
+     * @return Dotenv
      */
     protected function createDotenv()
     {

@@ -39,7 +39,7 @@ class IgnitionWhoopsHandler extends Handler
         return Handler::QUIT;
     }
 
-    /** @param \Throwable $exception */
+    /** @param Throwable $exception */
     public function setException($exception): void
     {
         $this->exception = $exception;

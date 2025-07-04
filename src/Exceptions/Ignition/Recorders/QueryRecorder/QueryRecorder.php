@@ -7,7 +7,7 @@ use Mini\Framework\Application;
 
 class QueryRecorder
 {
-    /** @var \Mini\Framework\Exceptions\Ignition\Recorders\QueryRecorder\Query[] */
+    /** @var Query[] */
     protected array $queries = [];
 
     protected Application $app;

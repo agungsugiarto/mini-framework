@@ -218,7 +218,7 @@ class Application extends Container implements RequestHandlerInterface
     /**
      * Register a service provider with the application.
      *
-     * @param \Illuminate\Support\ServiceProvider|string $provider
+     * @param ServiceProvider|string $provider
      *
      * @return void
      */
@@ -907,7 +907,7 @@ class Application extends Container implements RequestHandlerInterface
      *
      * @return string
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function getNamespace()
     {
@@ -1040,8 +1040,8 @@ class Application extends Container implements RequestHandlerInterface
             \Illuminate\Contracts\Cache\Factory::class => 'cache',
             \Illuminate\Contracts\Cache\Repository::class => 'cache.store',
             \Illuminate\Contracts\Config\Repository::class => 'config',
-            \Illuminate\Config\Repository::class => 'config',
-            \Illuminate\Container\Container::class => 'app',
+            ConfigRepository::class => 'config',
+            Container::class => 'app',
             \Illuminate\Contracts\Container\Container::class => 'app',
             \Illuminate\Database\ConnectionResolverInterface::class => 'db',
             \Illuminate\Database\DatabaseManager::class => 'db',
@@ -1051,7 +1051,7 @@ class Application extends Container implements RequestHandlerInterface
             \Illuminate\Contracts\Filesystem\Filesystem::class => 'filesystem.disk',
             \Illuminate\Contracts\Filesystem\Cloud::class => 'filesystem.cloud',
             \Illuminate\Contracts\Hashing\Hasher::class => 'hash',
-            'log' => \Psr\Log\LoggerInterface::class,
+            'log' => LoggerInterface::class,
             \Illuminate\Contracts\Queue\Factory::class => 'queue',
             \Illuminate\Contracts\Queue\Queue::class => 'queue.connection',
             \Illuminate\Redis\RedisManager::class => 'redis',
@@ -1059,10 +1059,10 @@ class Application extends Container implements RequestHandlerInterface
             \Illuminate\Redis\Connections\Connection::class => 'redis.connection',
             \Illuminate\Contracts\Redis\Connection::class => 'redis.connection',
             'request' => \Psr\Http\Message\ServerRequestInterface::class,
-            \Mini\Framework\Routing\Router::class => 'router',
-            \Illuminate\Session\SessionManager::class => 'session',
+            Router::class => 'router',
+            SessionManager::class => 'session',
             \Illuminate\Contracts\Translation\Translator::class => 'translator',
-            \Mini\Framework\Routing\UrlGenerator::class => 'url',
+            Routing\UrlGenerator::class => 'url',
             \Illuminate\Contracts\Validation\Factory::class => 'validator',
             \Illuminate\Contracts\View\Factory::class => 'view',
         ];
@@ -1074,9 +1074,9 @@ class Application extends Container implements RequestHandlerInterface
      * @var array
      */
     public $availableBindings = [
-        \Illuminate\Contracts\Broadcasting\Broadcaster::class => 'registerBroadcastingBindings',
-        \Illuminate\Contracts\Broadcasting\Factory::class => 'registerBroadcastingBindings',
-        \Illuminate\Contracts\Bus\Dispatcher::class => 'registerBusBindings',
+        Broadcaster::class => 'registerBroadcastingBindings',
+        Factory::class => 'registerBroadcastingBindings',
+        Dispatcher::class => 'registerBusBindings',
         'cache' => 'registerCacheBindings',
         'cache.store' => 'registerCacheBindings',
         \Illuminate\Contracts\Cache\Factory::class => 'registerCacheBindings',
@@ -1099,7 +1099,7 @@ class Application extends Container implements RequestHandlerInterface
         'hash' => 'registerHashBindings',
         \Illuminate\Contracts\Hashing\Hasher::class => 'registerHashBindings',
         'log' => 'registerLogBindings',
-        \Psr\Log\LoggerInterface::class => 'registerLogBindings',
+        LoggerInterface::class => 'registerLogBindings',
         'queue' => 'registerQueueBindings',
         'queue.connection' => 'registerQueueBindings',
         \Illuminate\Contracts\Queue\Factory::class => 'registerQueueBindings',
@@ -1112,6 +1112,6 @@ class Application extends Container implements RequestHandlerInterface
         \Illuminate\Contracts\Validation\Factory::class => 'registerValidatorBindings',
         'view' => 'registerViewBindings',
         \Illuminate\Contracts\View\Factory::class => 'registerViewBindings',
-        \Mini\Framework\Http\Middleware\Cors\CorsService::class => 'registerCorsServiceBindings',
+        CorsService::class => 'registerCorsServiceBindings',
     ];
 }

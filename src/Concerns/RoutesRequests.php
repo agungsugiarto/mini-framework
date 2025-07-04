@@ -2,37 +2,37 @@
 
 namespace Mini\Framework\Concerns;
 
-use Closure;
-use stdClass;
-use Throwable;
 use ArrayObject;
-use ReflectionClass;
-use JsonSerializable;
-use RuntimeException;
+use Closure;
 use FastRoute\Dispatcher;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
-use Laminas\Diactoros\StreamFactory;
-use Mini\Framework\Routing\Pipeline;
-use Laminas\Diactoros\ResponseFactory;
-use Mini\Framework\Http\ServerRequest;
-use Mini\Framework\Routing\Controller;
-use Psr\Http\Message\RequestInterface;
-use Illuminate\Database\Eloquent\Model;
-use Psr\Http\Message\ResponseInterface;
-use Illuminate\Contracts\Support\Jsonable;
-use Mini\Framework\Routing\RoutingClosure;
-use Illuminate\Contracts\Support\Arrayable;
-use Laminas\Diactoros\Response\JsonResponse;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
+use JsonSerializable;
 use Laminas\Diactoros\Response\EmptyResponse;
-use Mini\Framework\Http\ServerRequestFactory;
+use Laminas\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\ResponseFactory;
+use Laminas\Diactoros\StreamFactory;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use Mini\Framework\Exceptions\HttpResponseException;
-use Mini\Framework\Exceptions\NotFoundHttpException;
 use Mini\Framework\Exceptions\MethodNotAllowedHttpException;
+use Mini\Framework\Exceptions\NotFoundHttpException;
+use Mini\Framework\Http\ServerRequest;
+use Mini\Framework\Http\ServerRequestFactory;
+use Mini\Framework\Routing\Controller;
+use Mini\Framework\Routing\Pipeline;
+use Mini\Framework\Routing\RoutingClosure;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use ReflectionClass;
+use RuntimeException;
+use stdClass;
+use Throwable;
 
 trait RoutesRequests
 {
@@ -60,14 +60,14 @@ trait RoutesRequests
     /**
      * The FastRoute dispatcher.
      *
-     * @var \FastRoute\Dispatcher
+     * @var Dispatcher
      */
     protected $dispatcher;
 
     /**
      * Add new middleware to the application.
      *
-     * @param \Closure|array $middleware
+     * @param Closure|array $middleware
      *
      * @return $this
      */
@@ -185,7 +185,7 @@ trait RoutesRequests
     /**
      * Create a FastRoute dispatcher instance for the application.
      *
-     * @return \FastRoute\Dispatcher
+     * @return Dispatcher
      */
     protected function createDispatcher()
     {
@@ -372,7 +372,7 @@ trait RoutesRequests
     /**
      * Call a controller callable and return the response.
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     protected function callControllerCallable(callable $callable, array $parameters = [])
     {
@@ -414,12 +414,15 @@ trait RoutesRequests
             $request = $this->make('request');
 
             // Transform middleware to work with Laravel Pipeline using PSR-15 pattern
-            $transformedMiddleware = array_map(fn ($middlewareName) =>
-                fn ($request, $next) => $this->resolveMiddleware($middlewareName)->process(
+            $transformedMiddleware = array_map(fn ($middlewareName) => fn ($request, $next) => $this->resolveMiddleware($middlewareName)->process(
                     $request,
-                    new class($next) implements RequestHandlerInterface {
-                        public function __construct(private $next) {}
-                        public function handle(ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
+                    new class($next) implements RequestHandlerInterface
+                    {
+                        public function __construct(private $next)
+                        {
+                        }
+
+                        public function handle(ServerRequestInterface $request): ResponseInterface
                         {
                             return ($this->next)($request);
                         }
@@ -491,7 +494,6 @@ trait RoutesRequests
     /**
      * Resolve middleware instance from middleware name.
      *
-     * @param string $middlewareName
      * @return object
      */
     protected function resolveMiddleware(string $middlewareName)

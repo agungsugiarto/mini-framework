@@ -510,7 +510,7 @@ trait InteractsWithInput
      * @param string|null $key
      * @param mixed       $default
      *
-     * @return \Psr\Http\Message\UploadedFileInterface|\Psr\Http\Message\UploadedFileInterface[]|array|null
+     * @return UploadedFileInterface|UploadedFileInterface[]|array|null
      */
     public function file($key = null, $default = null)
     {

@@ -15,14 +15,14 @@ trait ProvidesConvenienceMethods
     /**
      * The response builder callback.
      *
-     * @var \Closure
+     * @var Closure
      */
     protected static $responseBuilder;
 
     /**
      * The error formatter callback.
      *
-     * @var \Closure
+     * @var Closure
      */
     protected static $errorFormatter;
 
@@ -51,7 +51,7 @@ trait ProvidesConvenienceMethods
      *
      * @return array
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function validate(ServerRequestInterface $request, array $rules, array $messages = [], array $customAttributes = [])
     {
@@ -88,7 +88,7 @@ trait ProvidesConvenienceMethods
      *
      * @return void
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     protected function throwValidationException(ServerRequestInterface $request, $validator)
     {
@@ -100,7 +100,7 @@ trait ProvidesConvenienceMethods
     /**
      * Build a response based on the given errors.
      *
-     * @return \Laminas\Diactoros\Response\JsonResponse|mixed
+     * @return JsonResponse|mixed
      */
     protected function buildFailedValidationResponse(ServerRequestInterface $request, array $errors)
     {

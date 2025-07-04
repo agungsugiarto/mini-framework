@@ -9,7 +9,7 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class ComposerClassMap
 {
-    /** @var \Mini\Framework\Exceptions\Ignition\Support\Composer\Composer */
+    /** @var Composer */
     protected object $composer;
 
     protected string $basePath;

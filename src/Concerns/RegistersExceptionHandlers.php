@@ -68,7 +68,7 @@ trait RegistersExceptionHandlers
      *
      * @return void
      *
-     * @throws \ErrorException
+     * @throws ErrorException
      */
     public function handleError($level, $message, $file = '', $line = 0, $context = [])
     {
@@ -146,7 +146,7 @@ trait RegistersExceptionHandlers
      *
      * @param int|null $traceOffset
      *
-     * @return \Symfony\Component\ErrorHandler\Error\FatalError
+     * @return FatalError
      */
     protected function fatalErrorFromPhpError(array $error, $traceOffset = null)
     {
@@ -212,7 +212,7 @@ trait RegistersExceptionHandlers
     /**
      * Get the exception handler from the container.
      *
-     * @return \Illuminate\Contracts\Debug\ExceptionHandler
+     * @return ExceptionHandler
      */
     protected function resolveExceptionHandler()
     {

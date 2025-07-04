@@ -73,7 +73,7 @@ trait InteractsWithFlashData
      *
      * @return \Illuminate\Session\Store
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     public function session()
     {

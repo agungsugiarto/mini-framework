@@ -8,7 +8,7 @@ use Throwable;
 
 class LogRecorder
 {
-    /** @var \Mini\Framework\Exceptions\Ignition\Recorders\LogRecorder\LogMessage[] */
+    /** @var LogMessage[] */
     protected array $logMessages = [];
 
     protected Application $app;
