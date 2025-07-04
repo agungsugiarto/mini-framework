@@ -2,35 +2,37 @@
 
 namespace Mini\Framework\Concerns;
 
-use ArrayObject;
 use Closure;
+use stdClass;
+use Throwable;
+use ArrayObject;
+use ReflectionClass;
+use JsonSerializable;
+use RuntimeException;
 use FastRoute\Dispatcher;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
-use JsonSerializable;
-use Laminas\Diactoros\Response\EmptyResponse;
-use Laminas\Diactoros\Response\JsonResponse;
-use Laminas\Diactoros\ResponseFactory;
 use Laminas\Diactoros\StreamFactory;
+use Mini\Framework\Routing\Pipeline;
+use Laminas\Diactoros\ResponseFactory;
+use Mini\Framework\Http\ServerRequest;
+use Mini\Framework\Routing\Controller;
+use Psr\Http\Message\RequestInterface;
+use Illuminate\Database\Eloquent\Model;
+use Psr\Http\Message\ResponseInterface;
+use Illuminate\Contracts\Support\Jsonable;
+use Mini\Framework\Routing\RoutingClosure;
+use Illuminate\Contracts\Support\Arrayable;
+use Laminas\Diactoros\Response\JsonResponse;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Mini\Framework\Http\ServerRequestFactory;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use Mini\Framework\Exceptions\HttpResponseException;
-use Mini\Framework\Exceptions\MethodNotAllowedHttpException;
 use Mini\Framework\Exceptions\NotFoundHttpException;
-use Mini\Framework\Http\ServerRequest;
-use Mini\Framework\Http\ServerRequestFactory;
-use Mini\Framework\Routing\Controller;
-use Mini\Framework\Routing\Pipeline;
-use Mini\Framework\Routing\RoutingClosure;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use RuntimeException;
-use stdClass;
-use Throwable;
+use Mini\Framework\Exceptions\MethodNotAllowedHttpException;
 
 trait RoutesRequests
 {
@@ -130,7 +132,7 @@ trait RoutesRequests
                 continue;
             }
 
-            $instance = $this->make(explode(':', $middleware)[0]);
+            $instance = $this->resolveMiddleware($middleware);
 
             if (method_exists($instance, 'terminate')) {
                 $instance->terminate($this->make('request'), $response);
@@ -237,6 +239,8 @@ trait RoutesRequests
         $this['request']->setRouteResolver(function () {
             return $this->currentRoute;
         });
+
+        $this['request']->withAttribute('route', $this['request']->route());
 
         $action = $routeInfo[1];
 
@@ -402,15 +406,32 @@ trait RoutesRequests
     /**
      * Send the request through the pipeline with the given callback.
      *
-     * @return mixed
+     * @return ResponseInterface
      */
     protected function sendThroughPipeline(array $middleware, Closure $then)
     {
         if (count($middleware) > 0 && ! $this->shouldSkipMiddleware()) {
+            $request = $this->make('request');
+
+            // Transform middleware to work with Laravel Pipeline using PSR-15 pattern
+            $transformedMiddleware = array_map(fn ($middlewareName) =>
+                fn ($request, $next) => $this->resolveMiddleware($middlewareName)->process(
+                    $request,
+                    new class($next) implements RequestHandlerInterface {
+                        public function __construct(private $next) {}
+                        public function handle(ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
+                        {
+                            return ($this->next)($request);
+                        }
+                    }
+                ),
+                $middleware
+            );
+
             return (new Pipeline($this))
-                ->send($this->make('request'))
-                ->through($middleware)
-                ->then($then);
+                ->send($request)
+                ->through($transformedMiddleware)
+                ->then(fn (ServerRequestInterface $request): ResponseInterface => $then($request));
         }
 
         return $then($this->make('request'));
@@ -425,27 +446,36 @@ trait RoutesRequests
      */
     public function prepareResponse($response)
     {
-        if ($response instanceof Model) {
-            $response = new JsonResponse($response, 201);
-        } elseif ($response instanceof Stringable) {
-            $response = (new ResponseFactory)->createResponse()
-                ->withBody((new StreamFactory)->createStream($response->__toString()));
-        } elseif (! $response instanceof ResponseInterface &&
-            ($response instanceof Arrayable ||
-             $response instanceof Jsonable ||
-             $response instanceof ArrayObject ||
-             $response instanceof JsonSerializable ||
-             $response instanceof stdClass ||
-             is_array($response))) {
-            $response = new JsonResponse($response);
-        } elseif (empty($response)) {
-            $response = new EmptyResponse();
-        } elseif (! $response instanceof ResponseInterface) {
-            $response = (new ResponseFactory)->createResponse()
-                ->withBody((new StreamFactory)->createStream($response));
+        if ($response instanceof ResponseInterface) {
+            return $response;
         }
 
-        return $response;
+        if ($response instanceof Model) {
+            return new JsonResponse($response, 201);
+        }
+
+        if ($response instanceof Stringable) {
+            return (new ResponseFactory)->createResponse()
+                ->withBody((new StreamFactory)->createStream((string) $response));
+        }
+
+        if (
+            $response instanceof Arrayable ||
+            $response instanceof Jsonable ||
+            $response instanceof ArrayObject ||
+            $response instanceof JsonSerializable ||
+            $response instanceof stdClass ||
+            is_array($response)
+        ) {
+            return new JsonResponse($response);
+        }
+
+        if (empty($response)) {
+            return new EmptyResponse();
+        }
+
+        return (new ResponseFactory)->createResponse()
+            ->withBody((new StreamFactory)->createStream((string) $response));
     }
 
     /**
@@ -456,5 +486,34 @@ trait RoutesRequests
     protected function shouldSkipMiddleware()
     {
         return $this->bound('middleware.disable') && $this->make('middleware.disable') === true;
+    }
+
+    /**
+     * Resolve middleware instance from middleware name.
+     *
+     * @param string $middlewareName
+     * @return object
+     */
+    protected function resolveMiddleware(string $middlewareName)
+    {
+        [$class, $parameterString] = array_pad(explode(':', $middlewareName, 2), 2, null);
+
+        if (! $parameterString) {
+            return $this->make($class);
+        }
+
+        $parameterValues = explode(',', $parameterString);
+
+        $parameterNames = array_map(
+            fn ($param) => $param->getName(),
+            (new ReflectionClass($class))->getConstructor()?->getParameters() ?? []
+        );
+
+        $parameters = array_combine(
+            array_slice($parameterNames, 0, count($parameterValues)),
+            $parameterValues
+        );
+
+        return $this->makeWith($class, $parameters);
     }
 }

@@ -2,12 +2,13 @@
 
 namespace Mini\Framework\Http\Middleware\Cors;
 
-use Closure;
 use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class CorsMiddleware
+class CorsMiddleware implements MiddlewareInterface
 {
     /** @var CorsService */
     protected $cors;
@@ -17,11 +18,14 @@ class CorsMiddleware
         $this->cors = $cors;
     }
 
-    public function handle(ServerRequestInterface $request, Closure $next)
+    /**
+     * {@inheritDoc}
+     */
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // Check if we're dealing with CORS and if we should handle it
         if (! $this->isMatchingPath($request)) {
-            return $next($request);
+            return $handler->handle($request);
         }
 
         // For Preflight, return the Preflight response
@@ -33,7 +37,7 @@ class CorsMiddleware
         }
 
         /** @var ResponseInterface Handle the request */
-        $response = $next($request);
+        $response = $handler->handle($request);
 
         if ($request->getMethod() === 'OPTIONS') {
             $response = $this->cors->varyHeader($response, 'Access-Control-Request-Method');

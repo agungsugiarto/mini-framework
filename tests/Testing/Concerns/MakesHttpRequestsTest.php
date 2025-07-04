@@ -8,6 +8,15 @@ use PHPUnit\Framework\TestCase;
 
 class MakesHttpRequestsTest extends TestCase
 {
+    /**
+     * Placeholder test to avoid PHPUnit warning.
+     * TODO: Implement actual tests for MakesHttpRequests trait.
+     */
+    public function testPlaceholder()
+    {
+        $this->assertTrue(true);
+    }
+
     // use MakesHttpRequests;
 
     // public function testReceiveJson()

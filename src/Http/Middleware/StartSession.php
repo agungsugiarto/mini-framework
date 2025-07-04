@@ -2,7 +2,6 @@
 
 namespace Mini\Framework\Http\Middleware;
 
-use Closure;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Session\SessionManager;
 use Illuminate\Support\Carbon;
@@ -10,8 +9,10 @@ use Illuminate\Support\Facades\Date;
 use Mini\Framework\Http\Cookie;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class StartSession
+class StartSession implements MiddlewareInterface
 {
     /**
      * The session manager.
@@ -32,31 +33,40 @@ class StartSession
      *
      * @return void
      */
-    public function __construct(SessionManager $manager, callable $cacheFactoryResolver = null)
+    public function __construct(SessionManager $manager, ?callable $cacheFactoryResolver = null)
     {
         $this->manager = $manager;
         $this->cacheFactoryResolver = $cacheFactoryResolver;
     }
 
     /**
-     * Handle an incoming request.
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
-    public function handle(ServerRequestInterface $request, Closure $next)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (! $this->sessionConfigured()) {
-            return $next($request);
+            return $handler->handle($request);
         }
 
         $session = $this->getSession($request);
 
         if ($this->manager->shouldBlock() ||
-            ($request->route())) {
-            return $this->handleRequestWhileBlocking($request, $session, $next);
+            $this->hasRoute($request)) {
+            return $this->handleRequestWhileBlocking($request, $session, $handler);
         }
 
-        return $this->handleStatefulRequest($request, $session, $next);
+        return $this->handleStatefulRequest($request, $session, $handler);
+    }
+
+    /**
+     * Check if the request has a route.
+     *
+     * @param ServerRequestInterface $request
+     * @return bool
+     */
+    protected function hasRoute(ServerRequestInterface $request): bool
+    {
+        return $request->getAttribute('route') !== null;
     }
 
     /**
@@ -64,12 +74,12 @@ class StartSession
      *
      * @param \Illuminate\Contracts\Session\Session $session
      *
-     * @return mixed
+     * @return ResponseInterface
      */
-    protected function handleRequestWhileBlocking(ServerRequestInterface $request, $session, Closure $next)
+    protected function handleRequestWhileBlocking(ServerRequestInterface $request, $session, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (! $request->route()) {
-            return;
+        if (! $this->hasRoute($request)) {
+            return $handler->handle($request);
         }
 
         $lockFor = 10;
@@ -81,7 +91,7 @@ class StartSession
         try {
             $lock->block($lockFor);
 
-            return $this->handleStatefulRequest($request, $session, $next);
+            return $this->handleStatefulRequest($request, $session, $handler);
         } finally {
             $lock?->release();
         }
@@ -92,9 +102,9 @@ class StartSession
      *
      * @param \Illuminate\Contracts\Session\Session $session
      *
-     * @return mixed
+     * @return ResponseInterface
      */
-    protected function handleStatefulRequest(ServerRequestInterface $request, $session, Closure $next)
+    protected function handleStatefulRequest(ServerRequestInterface $request, $session, RequestHandlerInterface $handler): ResponseInterface
     {
         // If a session driver has been configured, we will need to start the session here
         // so that the data is ready for an application. Note that the sessions do not
@@ -103,7 +113,7 @@ class StartSession
 
         $this->collectGarbage($session);
 
-        $response = $next($request);
+        $response = $handler->handle($request);
 
         $this->storeCurrentUrl($request, $session);
 
@@ -182,7 +192,7 @@ class StartSession
     protected function storeCurrentUrl(ServerRequestInterface $request, $session)
     {
         if ($request->getMethod() === 'GET' &&
-            $request->route() &&
+            $this->hasRoute($request) &&
             'XMLHttpRequest' !== $request->getHeaderLine('X-Requested-With')) {
             $session->setPreviousUrl($request->getUri()->getPath());
         }
@@ -191,9 +201,9 @@ class StartSession
     /**
      * Add the session cookie to the application response.
      *
-     * @return void
+     * @return ResponseInterface
      */
-    protected function addCookieToResponse(ResponseInterface $response, Session $session)
+    protected function addCookieToResponse(ResponseInterface $response, Session $session): ResponseInterface
     {
         if ($this->sessionIsPersistent($config = $this->manager->getSessionConfig())) {
             $response = $response->withHeader('Set-Cookie', (new Cookie(
