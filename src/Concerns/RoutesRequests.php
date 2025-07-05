@@ -415,19 +415,19 @@ trait RoutesRequests
 
             // Transform middleware to work with Laravel Pipeline using PSR-15 pattern
             $transformedMiddleware = array_map(fn ($middlewareName) => fn ($request, $next) => $this->resolveMiddleware($middlewareName)->process(
-                    $request,
-                    new class($next) implements RequestHandlerInterface
+                $request,
+                new class($next) implements RequestHandlerInterface
+                {
+                    public function __construct(private $next)
                     {
-                        public function __construct(private $next)
-                        {
-                        }
-
-                        public function handle(ServerRequestInterface $request): ResponseInterface
-                        {
-                            return ($this->next)($request);
-                        }
                     }
-                ),
+
+                    public function handle(ServerRequestInterface $request): ResponseInterface
+                    {
+                        return ($this->next)($request);
+                    }
+                }
+            ),
                 $middleware
             );
 
