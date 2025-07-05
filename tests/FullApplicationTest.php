@@ -1256,7 +1256,7 @@ class FullApplicationTest extends TestCase
         });
 
         // Test the full lifecycle
-        $response = $app->testRun((new ServerRequestFactory)->createServerRequest('GET', '/lifecycle'));
+        $response = $app->test_run((new ServerRequestFactory)->createServerRequest('GET', '/lifecycle'));
 
         // Verify the full execution flow
         $expectedLog = [

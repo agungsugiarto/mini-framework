@@ -19,7 +19,7 @@
         }
     ],
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.1.0",
         "dragonmantank/cron-expression": "^3.1",
         "illuminate/broadcasting": "^9.36.3",
         "illuminate/bus": "^9.36.3",
