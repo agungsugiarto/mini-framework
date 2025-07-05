@@ -78,6 +78,12 @@
             "src/helpers.php"
         ]
     },
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html coverage",
+        "lint": "pint",
+        "lint-fix": "pint --fix"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "3.x-dev"

@@ -242,7 +242,7 @@ trait RoutesRequests
             return $this->currentRoute;
         });
 
-        $this['request']->withAttribute('route', $this['request']->route());
+        $this['request']->withAttribute('route', $this->currentRoute);
 
         $action = $routeInfo[1];
 
@@ -307,11 +307,15 @@ trait RoutesRequests
     {
         $uses = $routeInfo[1]['uses'];
 
-        if (is_string($uses) && ! Str::contains($uses, '@')) {
-            $uses .= '@__invoke';
-        }
+        if (is_array($uses) && count($uses) === 2) {
+            [$controller, $method] = $uses;
+        } else {
+            if (is_string($uses) && ! Str::contains($uses, '@')) {
+                $uses .= '@__invoke';
+            }
 
-        [$controller, $method] = explode('@', $uses);
+            [$controller, $method] = explode('@', $uses);
+        }
 
         if (! method_exists($instance = $this->make($controller), $method)) {
             throw new NotFoundHttpException;
@@ -448,12 +452,12 @@ trait RoutesRequests
         }
 
         if (
-            $response instanceof Arrayable ||
-            $response instanceof Jsonable ||
-            $response instanceof ArrayObject ||
-            $response instanceof JsonSerializable ||
-            $response instanceof stdClass ||
-            is_array($response)
+            $response instanceof Arrayable
+            || $response instanceof Jsonable
+            || $response instanceof ArrayObject
+            || $response instanceof JsonSerializable
+            || $response instanceof stdClass
+            || is_array($response)
         ) {
             return new JsonResponse($response);
         }

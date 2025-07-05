@@ -205,7 +205,38 @@ class Router
     protected function parseAction($action)
     {
         if (is_string($action)) {
+            // Handle single class name (invokable controller)
+            // For string without @, always add @__invoke (will be determined if invokable after namespace merge)
+            if (! str_contains($action, '@')) {
+                return ['uses' => $action.'@__invoke'];
+            }
             return ['uses' => $action];
+        } elseif (is_array($action) && $this->isCallableArray($action)) {
+            // Handle [class, method] syntax
+            return ['uses' => $action[0].'@'.$action[1]];
+        } elseif (is_array($action) && $this->isSingleClassArray($action)) {
+            // Handle [class] syntax (single element array with class name)
+            return ['uses' => $action[0].'@__invoke'];
+        } elseif (is_array($action) && isset($action['uses']) && $this->isCallableArray($action['uses'])) {
+            // Handle ['uses' => [class, method], 'middleware' => '...'] syntax
+            $action['uses'] = $action['uses'][0].'@'.$action['uses'][1];
+
+            if (isset($action['middleware']) && is_string($action['middleware'])) {
+                $action['middleware'] = explode('|', $action['middleware']);
+            }
+
+            return $action;
+        } elseif (is_array($action) && isset($action['uses']) && is_string($action['uses'])) {
+            // Handle ['uses' => 'ClassName', 'middleware' => '...'] syntax for invokable
+            if (! str_contains($action['uses'], '@')) {
+                $action['uses'] = $action['uses'].'@__invoke';
+            }
+
+            if (isset($action['middleware']) && is_string($action['middleware'])) {
+                $action['middleware'] = explode('|', $action['middleware']);
+            }
+
+            return $action;
         } elseif (! is_array($action)) {
             return [$action];
         }
@@ -215,6 +246,48 @@ class Router
         }
 
         return $action;
+    }
+
+    /**
+     * Determine if the given array is a callable array [class, method].
+     *
+     * @param  mixed  $action
+     * @return bool
+     */
+    protected function isCallableArray($action)
+    {
+        return is_array($action)
+            && count($action) === 2
+            && isset($action[0])
+            && isset($action[1])
+            && is_string($action[0])
+            && is_string($action[1])
+            && class_exists($action[0])
+            && ! isset($action['uses'])
+            && ! isset($action['middleware'])
+            && ! isset($action['as'])
+            && ! isset($action['prefix'])
+            && ! isset($action['namespace']);
+    }
+
+    /**
+     * Determine if the given array is a single class array [ClassName].
+     *
+     * @param  mixed  $action
+     * @return bool
+     */
+    protected function isSingleClassArray($action)
+    {
+        return is_array($action)
+            && count($action) === 1
+            && isset($action[0])
+            && is_string($action[0])
+            && class_exists($action[0])
+            && ! isset($action['uses'])
+            && ! isset($action['middleware'])
+            && ! isset($action['as'])
+            && ! isset($action['prefix'])
+            && ! isset($action['namespace']);
     }
 
     /**
@@ -270,8 +343,23 @@ class Router
      */
     protected function prependGroupNamespace($class, $namespace = null)
     {
-        return $namespace !== null && strpos($class, '\\') !== 0
-            ? $namespace.'\\'.$class : $class;
+        if (! is_string($class)) {
+            return $class;
+        }
+
+        $parts = explode('@', $class);
+        $className = $parts[0];
+        $method = $parts[1] ?? null;
+
+        $shouldAddNamespace = $namespace !== null
+            && strpos($className, '\\') !== 0
+            && strpos($className, '\\') === false;
+
+        if ($shouldAddNamespace) {
+            $className = $namespace.'\\'.$className;
+        }
+
+        return $method ? $className.'@'.$method : $className;
     }
 
     /**
