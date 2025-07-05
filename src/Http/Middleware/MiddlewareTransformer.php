@@ -32,9 +32,13 @@ class MiddlewareTransformer
     /**
      * Resolve middleware instance from middleware name.
      */
-    public function resolveMiddleware(string $middlewareName): MiddlewareInterface
+    public function resolveMiddleware(MiddlewareInterface|string $middleware): MiddlewareInterface
     {
-        [$class, $parameterString] = array_pad(explode(':', $middlewareName, 2), 2, null);
+        if ($middleware instanceof MiddlewareInterface) {
+            return $middleware;
+        }
+
+        [$class, $parameterString] = array_pad(explode(':', $middleware, 2), 2, null);
 
         if (! $parameterString) {
             return $this->container->make($class);

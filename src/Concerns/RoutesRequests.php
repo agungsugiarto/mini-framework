@@ -30,6 +30,7 @@ use Mini\Framework\Routing\RoutingClosure;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use RuntimeException;
 use stdClass;
 use Throwable;
@@ -404,6 +405,10 @@ trait RoutesRequests
         $middleware = is_string($middleware) ? explode('|', $middleware) : (array) $middleware;
 
         return array_map(function ($name) {
+            if ($name instanceof MiddlewareInterface) {
+                return $name;
+            }
+
             [$name, $parameters] = array_pad(explode(':', $name, 2), 2, null);
 
             return Arr::get($this->routeMiddleware, $name, $name).($parameters ? ':'.$parameters : '');
