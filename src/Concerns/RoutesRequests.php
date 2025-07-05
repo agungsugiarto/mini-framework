@@ -7,6 +7,7 @@ use Closure;
 use FastRoute\Dispatcher;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -440,6 +441,10 @@ trait RoutesRequests
     {
         if ($response instanceof ResponseInterface) {
             return $response;
+        }
+
+        if ($response instanceof Responsable) {
+            return $this->prepareResponse($response->toResponse($this->make('request')));
         }
 
         if ($response instanceof Model) {

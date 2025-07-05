@@ -240,22 +240,22 @@ class FullApplicationTest extends TestCase
         $this->assertTrue(defined('TERMINATE_MIDDLEWARE_CALLED'));
     }
 
-    // public function testTerminateWithMiddlewareDisabled()
-    // {
-    //     $app = new Application;
+    public function test_terminate_with_middleware_disabled()
+    {
+        $app = new Application;
 
-    //     $app->middleware(['MiniTestTerminateMiddleware']);
-    //     $app->instance('middleware.disable', true);
+        $app->middleware(['MiniTestTerminateMiddleware']);
+        $app->instance('middleware.disable', true);
 
-    //     $app->router->get('/', function () {
-    //         return response('Hello World');
-    //     });
+        $app->router->get('/', function () {
+            return 'Hello World';
+        });
 
-    //     $response = $app->handle(Request::create('/', 'GET'));
+        $response = $app->handle((new ServerRequestFactory)->createServerRequest('GET', '/'));
 
-    //     $this->assertEquals(200, $response->getStatusCode());
-    //     $this->assertEquals('Hello World', $response->getContent());
-    // }
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('Hello World', $response->getBody()->getContents());
+    }
 
     public function test_not_found_response()
     {
@@ -287,19 +287,19 @@ class FullApplicationTest extends TestCase
         $this->assertEquals(405, $response->getStatusCode());
     }
 
-    // public function testResponsableInterface()
-    // {
-    //     $app = new Application;
+    public function test_responsable_interface()
+    {
+        $app = new Application;
 
-    //     $app->router->get('/foo/{foo}', function () {
-    //         return new ResponsableResponse;
-    //     });
+        $app->router->get('/foo/{foo}', function () {
+            return new ResponsableResponse;
+        });
 
-    //     $response = $app->handle($request = (new ServerRequestFactory)->createServerRequest('GET', '/foo/999'));
+        $response = $app->handle($request = (new ServerRequestFactory)->createServerRequest('GET', '/foo/999'));
 
-    //     $this->assertEquals(999, $request->route('foo'));
-    //     $this->assertEquals(999, $response->original);
-    // }
+        $this->assertEquals(999, $request->route('foo'));
+        $this->assertEquals('999', $response->getBody()->getContents());
+    }
 
     public function test_uncaught_exception_response()
     {
