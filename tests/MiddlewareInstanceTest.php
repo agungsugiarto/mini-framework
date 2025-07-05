@@ -15,15 +15,15 @@ class MiddlewareInstanceTest extends TestCase
         $app = new Application;
 
         // Create middleware instances
-        $throttleMiddleware = new TestThrottleMiddleware();
-        $corsMiddleware = new TestCorsMiddleware();
+        $throttleMiddleware = new TestThrottleMiddleware;
+        $corsMiddleware = new TestCorsMiddleware;
 
         // Register route with middleware instances
         $app->router->get('/test', [
             'middleware' => [$throttleMiddleware, $corsMiddleware],
             function () {
                 return 'Hello World';
-            }
+            },
         ]);
 
         $response = $app->handle((new ServerRequestFactory)->createServerRequest('GET', '/test'));
@@ -46,14 +46,14 @@ class MiddlewareInstanceTest extends TestCase
         ]);
 
         // Create middleware instance
-        $throttleMiddleware = new TestThrottleMiddleware();
+        $throttleMiddleware = new TestThrottleMiddleware;
 
         // Register route with mixed middleware (instance + string)
         $app->router->get('/mixed', [
             'middleware' => [$throttleMiddleware, 'auth'],
             function () {
                 return 'Mixed Middleware Test';
-            }
+            },
         ]);
 
         $response = $app->handle((new ServerRequestFactory)->createServerRequest('GET', '/mixed'));
@@ -74,7 +74,7 @@ class MiddlewareInstanceTest extends TestCase
             'middleware' => [TestThrottleMiddleware::class, TestCorsMiddleware::class],
             function () {
                 return 'Class Middleware Test';
-            }
+            },
         ]);
 
         $response = $app->handle((new ServerRequestFactory)->createServerRequest('GET', '/class'));
@@ -93,14 +93,14 @@ class MiddlewareInstanceTest extends TestCase
         ]);
 
         // Create middleware instance
-        $corsMiddleware = new TestCorsMiddleware();
+        $corsMiddleware = new TestCorsMiddleware;
 
         // Register route with parameterized string + instance
         $app->router->get('/params', [
             'middleware' => ['throttle:60,1', $corsMiddleware],
             function () {
                 return 'Parameterized Test';
-            }
+            },
         ]);
 
         $response = $app->handle((new ServerRequestFactory)->createServerRequest('GET', '/params'));
@@ -135,12 +135,12 @@ class MiddlewareInstanceTest extends TestCase
         ]);
 
         // Create the middleware instance as requested by the user
-        $throttleMiddleware = new ThrottleRequests();
+        $throttleMiddleware = new ThrottleRequests;
 
         // Register route with exact syntax requested by user
         $app->router->get('example', [
             'middleware' => [$throttleMiddleware, 'cors'],
-            'uses'       => [ExampleController::class, 'index'],
+            'uses' => [ExampleController::class, 'index'],
         ]);
 
         $response = $app->handle((new ServerRequestFactory)->createServerRequest('GET', '/example'));
@@ -162,14 +162,14 @@ class MiddlewareInstanceTest extends TestCase
         ]);
 
         // Create the middleware instance as requested by the user
-        $throttleMiddleware = new ThrottleRequests();
+        $throttleMiddleware = new ThrottleRequests;
 
         // Register route with middleware instances and closure
         $app->router->get('example-closure', [
             'middleware' => [$throttleMiddleware, 'cors'],
             function () {
                 return 'Closure Response';
-            }
+            },
         ]);
 
         $response = $app->handle((new ServerRequestFactory)->createServerRequest('GET', '/example-closure'));
@@ -193,6 +193,7 @@ class TestThrottleMiddleware implements MiddlewareInterface
 
         // Add header to indicate this middleware ran
         $response = $handler->handle($request);
+
         return $response->withHeader('X-Throttle-Middleware', 'executed');
     }
 
@@ -212,8 +213,9 @@ class TestCorsMiddleware implements MiddlewareInterface
 
         // Add CORS headers
         $response = $handler->handle($request);
+
         return $response->withHeader('X-CORS-Middleware', 'executed')
-                        ->withHeader('Access-Control-Allow-Origin', '*');
+            ->withHeader('Access-Control-Allow-Origin', '*');
     }
 
     public function wasExecuted(): bool
@@ -228,6 +230,7 @@ class TestAuthMiddleware implements MiddlewareInterface
     {
         // Simple auth check
         $response = $handler->handle($request);
+
         return $response->withHeader('X-Auth-Middleware', 'executed');
     }
 }
@@ -243,8 +246,9 @@ class TestParameterizedMiddleware implements MiddlewareInterface
     {
         // Add headers showing the parameters were injected
         $response = $handler->handle($request);
+
         return $response->withHeader('X-Max-Attempts', (string) $this->maxAttempts)
-                        ->withHeader('X-Decay-Minutes', (string) $this->decayMinutes);
+            ->withHeader('X-Decay-Minutes', (string) $this->decayMinutes);
     }
 }
 
@@ -262,8 +266,8 @@ class TestControllerWithInstanceMiddleware
     public function getMiddlewareForMethod(string $method): array
     {
         return [
-            new TestThrottleMiddleware(),
-            new TestCorsMiddleware(),
+            new TestThrottleMiddleware,
+            new TestCorsMiddleware,
         ];
     }
 
@@ -284,6 +288,7 @@ class ThrottleRequests implements MiddlewareInterface
 
         // Add header to indicate this middleware ran
         $response = $handler->handle($request);
+
         return $response->withHeader('X-Throttle-Requests', 'executed');
     }
 
@@ -306,7 +311,8 @@ class CorsMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $response = $handler->handle($request);
+
         return $response->withHeader('X-CORS', 'executed')
-                        ->withHeader('Access-Control-Allow-Origin', '*');
+            ->withHeader('Access-Control-Allow-Origin', '*');
     }
 }
