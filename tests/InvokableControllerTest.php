@@ -70,7 +70,7 @@ class InvokableControllerTest extends TestCase
         // Test invokable with middleware
         $app->router->get('/admin-export', [
             'middleware' => 'auth|admin',
-            'uses' => AdminExportController::class
+            'uses' => AdminExportController::class,
         ]);
 
         $routes = $app->router->getRoutes();
@@ -89,7 +89,7 @@ class InvokableControllerTest extends TestCase
         $app->router->get('/dashboard-export', [
             'as' => 'dashboard.export',
             'middleware' => 'auth',
-            'uses' => DashboardExportController::class
+            'uses' => DashboardExportController::class,
         ]);
 
         $routes = $app->router->getRoutes();
@@ -181,17 +181,17 @@ class InvokableControllerTest extends TestCase
         $app->router->group([
             'namespace' => 'App\\Admin',
             'prefix' => 'admin',
-            'middleware' => 'auth|admin'
+            'middleware' => 'auth|admin',
         ], function ($router) {
             $router->get('/dashboard', DashboardController::class);
             $router->get('/reports', [
                 'middleware' => 'permission:view-reports',
-                'uses' => ReportsController::class
+                'uses' => ReportsController::class,
             ]);
             $router->post('/export', [
                 'as' => 'admin.export',
                 'middleware' => 'export',
-                'uses' => ExportController::class
+                'uses' => ExportController::class,
             ]);
         });
 
@@ -231,7 +231,7 @@ class InvokableControllerTest extends TestCase
             // String in array should get namespace
             $router->put('/mixed-controller', [
                 'middleware' => 'auth',
-                'uses' => 'MixedController'
+                'uses' => 'MixedController',
             ]);
         });
 

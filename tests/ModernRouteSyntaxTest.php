@@ -19,6 +19,7 @@ class ModernRouteSyntaxTest extends TestCase
     {
         return new Application;
     }
+
     /** @test */
     public function it_supports_basic_array_syntax()
     {
@@ -41,7 +42,7 @@ class ModernRouteSyntaxTest extends TestCase
         // Test array syntax with middleware
         $app->router->get('/admin', [
             'middleware' => 'auth|admin',
-            'uses' => [TestController::class, 'admin']
+            'uses' => [TestController::class, 'admin'],
         ]);
 
         $routes = $app->router->getRoutes();
@@ -59,7 +60,7 @@ class ModernRouteSyntaxTest extends TestCase
         // Test named routes with array syntax
         $app->router->get('/dashboard', [
             'as' => 'dashboard',
-            'uses' => [TestController::class, 'dashboard']
+            'uses' => [TestController::class, 'dashboard'],
         ]);
 
         $routes = $app->router->getRoutes();

@@ -210,6 +210,7 @@ class Router
             if (! str_contains($action, '@')) {
                 return ['uses' => $action.'@__invoke'];
             }
+
             return ['uses' => $action];
         } elseif (is_array($action) && $this->isCallableArray($action)) {
             // Handle [class, method] syntax
