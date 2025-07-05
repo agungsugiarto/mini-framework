@@ -30,6 +30,6 @@ class DefaultDbNameSolutionProvider implements HasSolutionsForThrowable
 
     public function getSolutions(Throwable $throwable): array
     {
-        return [new SuggestUsingCorrectDbNameSolution()];
+        return [new SuggestUsingCorrectDbNameSolution];
     }
 }

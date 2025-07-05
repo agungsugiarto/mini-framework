@@ -28,7 +28,7 @@ class QueryRecorder
 
     public function start(): self
     {
-        /* @phpstan-ignore-next-line  */
+        /* @phpstan-ignore-next-line */
         $this->app['events']->listen(QueryExecuted::class, [$this, 'record']);
 
         return $this;

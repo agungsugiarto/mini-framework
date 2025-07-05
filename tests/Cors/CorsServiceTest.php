@@ -8,7 +8,7 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itCanHaveOptions(): void
+    public function it_can_have_options(): void
     {
         $options = [
             'allowedOrigins' => ['localhost'],
@@ -38,9 +38,9 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itCanSetOptions(): void
+    public function it_can_set_options(): void
     {
-        $service = new CorsService();
+        $service = new CorsService;
         $normalized = $this->getOptionsFromService($service);
         $this->assertEquals([], $normalized['allowedOrigins']);
 
@@ -72,7 +72,7 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itCanOverwriteSetOptions(): void
+    public function it_can_overwrite_set_options(): void
     {
         $service = new CorsService(['allowedOrigins' => ['example.com']]);
         $normalized = $this->getOptionsFromService($service);
@@ -107,9 +107,9 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itCanHaveNoOptions(): void
+    public function it_can_have_no_options(): void
     {
-        $service = new CorsService();
+        $service = new CorsService;
         $this->assertInstanceOf(CorsService::class, $service);
 
         $normalized = $this->getOptionsFromService($service);
@@ -126,7 +126,7 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itCanHaveEmptyOptions(): void
+    public function it_can_have_empty_options(): void
     {
         $service = new CorsService([]);
         $this->assertInstanceOf(CorsService::class, $service);
@@ -145,7 +145,7 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itNormalizesFalseExposedHeaders(): void
+    public function it_normalizes_false_exposed_headers(): void
     {
         $service = new CorsService(['exposedHeaders' => false]);
         $this->assertEquals([], $this->getOptionsFromService($service)['exposedHeaders']);
@@ -154,7 +154,7 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itAllowsNullMaxAge(): void
+    public function it_allows_null_max_age(): void
     {
         $service = new CorsService(['maxAge' => null]);
         $this->assertNull($this->getOptionsFromService($service)['maxAge']);
@@ -163,7 +163,7 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itAllowsZeroMaxAge(): void
+    public function it_allows_zero_max_age(): void
     {
         $service = new CorsService(['maxAge' => 0]);
         $this->assertEquals(0, $this->getOptionsFromService($service)['maxAge']);
@@ -172,7 +172,7 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itThrowsExceptionOnInvalidExposedHeaders(): void
+    public function it_throws_exception_on_invalid_exposed_headers(): void
     {
         $this->expectException(TypeError::class);
 
@@ -183,7 +183,7 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itThrowsExceptionOnInvalidOriginsArray(): void
+    public function it_throws_exception_on_invalid_origins_array(): void
     {
         $this->expectException(TypeError::class);
 
@@ -194,7 +194,7 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itNormalizesWildcardOrigins(): void
+    public function it_normalizes_wildcard_origins(): void
     {
         $service = new CorsService(['allowedOrigins' => ['*']]);
         $this->assertInstanceOf(CorsService::class, $service);
@@ -205,7 +205,7 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itNormalizesWildcardHeaders(): void
+    public function it_normalizes_wildcard_headers(): void
     {
         $service = new CorsService(['allowedHeaders' => ['*']]);
         $this->assertInstanceOf(CorsService::class, $service);
@@ -216,7 +216,7 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itNormalizesWildcardMethods(): void
+    public function it_normalizes_wildcard_methods(): void
     {
         $service = new CorsService(['allowedMethods' => ['*']]);
         $this->assertInstanceOf(CorsService::class, $service);
@@ -227,7 +227,7 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itConvertsWildcardOriginPatterns(): void
+    public function it_converts_wildcard_origin_patterns(): void
     {
         $service = new CorsService(['allowedOrigins' => ['*.mydomain.com']]);
         $this->assertInstanceOf(CorsService::class, $service);
@@ -239,7 +239,7 @@ class CorsServiceTest extends TestCase
     /**
      * @test
      */
-    public function itNormalizesUnderscoreOptions(): void
+    public function it_normalizes_underscore_options(): void
     {
         $options = [
             'allowed_origins' => ['localhost'],

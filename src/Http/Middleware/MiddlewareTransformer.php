@@ -2,18 +2,16 @@
 
 namespace Mini\Framework\Http\Middleware;
 
-use ReflectionClass;
 use Illuminate\Container\Container;
 use Psr\Http\Server\MiddlewareInterface;
+use ReflectionClass;
 
 class MiddlewareTransformer
 {
     /**
      * Create a new middleware transformer instance.
      */
-    public function __construct(protected Container $container)
-    {
-    }
+    public function __construct(protected Container $container) {}
 
     /**
      * Transform middleware to work with Laravel Pipeline using PSR-15 pattern.
@@ -21,7 +19,7 @@ class MiddlewareTransformer
     public function transform(array $middleware): array
     {
         return array_map(
-            fn($middlewareName) => fn($request, $next) => $this->resolveMiddleware($middlewareName)->process(
+            fn ($middlewareName) => fn ($request, $next) => $this->resolveMiddleware($middlewareName)->process(
                 $request,
                 new PipelineRequestHandler($next)
             ),
@@ -43,7 +41,7 @@ class MiddlewareTransformer
         $parameterValues = explode(',', $parameterString);
 
         $parameterNames = array_map(
-            fn($param) => $param->getName(),
+            fn ($param) => $param->getName(),
             (new ReflectionClass($class))->getConstructor()?->getParameters() ?? []
         );
 

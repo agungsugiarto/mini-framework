@@ -23,7 +23,7 @@ class MissingImportSolutionProvider implements HasSolutionsForThrowable
 
         $class = $matches[1];
 
-        $this->composerClassMap = new ComposerClassMap();
+        $this->composerClassMap = new ComposerClassMap;
 
         $this->search($class);
 

@@ -42,7 +42,7 @@ class IncorrectValetDbCredentialsSolutionProvider implements HasSolutionsForThro
 
     public function getSolutions(Throwable $throwable): array
     {
-        return [new UseDefaultValetDbCredentialsSolution()];
+        return [new UseDefaultValetDbCredentialsSolution];
     }
 
     protected function envFileExists(): bool

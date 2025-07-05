@@ -30,9 +30,8 @@ abstract class FormRequest
     /**
      * Get the validated data from the request.
      *
-     * @param string|null $key
-     * @param mixed       $default
-     *
+     * @param  string|null  $key
+     * @param  mixed  $default
      * @return mixed
      */
     public function validated($key = null, $default = null)

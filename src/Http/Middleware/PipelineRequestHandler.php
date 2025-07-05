@@ -9,12 +9,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class PipelineRequestHandler implements RequestHandlerInterface
 {
-     /**
+    /**
      * Create a new pipeline request handler instance.
      */
-    public function __construct(private Closure $next)
-    {
-    }
+    public function __construct(private Closure $next) {}
 
     /**
      * {@inheritDoc}

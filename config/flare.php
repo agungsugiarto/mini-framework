@@ -1,16 +1,16 @@
 <?php
 
-use Spatie\FlareClient\FlareMiddleware\AddGitInformation;
-use Spatie\FlareClient\FlareMiddleware\RemoveRequestIp;
-use Spatie\FlareClient\FlareMiddleware\CensorRequestBodyFields;
-use Spatie\FlareClient\FlareMiddleware\CensorRequestHeaders;
 use Mini\Framework\Exceptions\Ignition\FlareMiddleware\AddDumps;
 use Mini\Framework\Exceptions\Ignition\FlareMiddleware\AddEnvironmentInformation;
 use Mini\Framework\Exceptions\Ignition\FlareMiddleware\AddExceptionInformation;
 use Mini\Framework\Exceptions\Ignition\FlareMiddleware\AddJobs;
 use Mini\Framework\Exceptions\Ignition\FlareMiddleware\AddLogs;
-use Mini\Framework\Exceptions\Ignition\FlareMiddleware\AddQueries;
 use Mini\Framework\Exceptions\Ignition\FlareMiddleware\AddNotifierName;
+use Mini\Framework\Exceptions\Ignition\FlareMiddleware\AddQueries;
+use Spatie\FlareClient\FlareMiddleware\AddGitInformation;
+use Spatie\FlareClient\FlareMiddleware\CensorRequestBodyFields;
+use Spatie\FlareClient\FlareMiddleware\CensorRequestHeaders;
+use Spatie\FlareClient\FlareMiddleware\RemoveRequestIp;
 
 return [
     /*
@@ -62,8 +62,8 @@ return [
         CensorRequestHeaders::class => [
             'headers' => [
                 'API-KEY',
-            ]
-        ]
+            ],
+        ],
     ],
 
     /*

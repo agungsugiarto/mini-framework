@@ -29,7 +29,7 @@ class UndefinedViewVariableSolutionProvider implements HasSolutionsForThrowable
     {
         $solutions = [];
 
-        /* @phpstan-ignore-next-line  */
+        /* @phpstan-ignore-next-line */
         extract($this->getNameAndView($throwable));
 
         if (! isset($variableName)) {

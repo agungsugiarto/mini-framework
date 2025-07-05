@@ -27,12 +27,12 @@ class ErrorPageRenderer
 
         app(Ignition::class)
             ->resolveDocumentationLink(
-                fn (Throwable $throwable) => (new LaravelDocumentationLinkFinder())->findLinkForThrowable($throwable)
+                fn (Throwable $throwable) => (new LaravelDocumentationLinkFinder)->findLinkForThrowable($throwable)
             )
             ->setFlare(app(Flare::class))
             ->setConfig(app(IgnitionConfig::class))
             ->setSolutionProviderRepository(app(SolutionProviderRepository::class))
-            ->setContextProviderDetector(new LaravelContextProviderDetector())
+            ->setContextProviderDetector(new LaravelContextProviderDetector)
             ->setSolutionTransformerClass(LaravelSolutionTransformer::class)
             ->applicationPath(base_path())
             ->addCustomHtmlToHead($vitejsAutoRefresh)

@@ -29,9 +29,8 @@ trait MakesHttpRequests
     /**
      * Visit the given URI with a JSON request.
      *
-     * @param string $method
-     * @param string $uri
-     *
+     * @param  string  $method
+     * @param  string  $uri
      * @return $this
      */
     public function json($method, $uri, array $data = [], array $headers = [])
@@ -54,8 +53,7 @@ trait MakesHttpRequests
     /**
      * Visit the given URI with a GET request.
      *
-     * @param string $uri
-     *
+     * @param  string  $uri
      * @return $this
      */
     public function get($uri, array $headers = [])
@@ -70,8 +68,7 @@ trait MakesHttpRequests
     /**
      * Visit the given URI with a POST request.
      *
-     * @param string $uri
-     *
+     * @param  string  $uri
      * @return $this
      */
     public function post($uri, array $data = [], array $headers = [])
@@ -86,8 +83,7 @@ trait MakesHttpRequests
     /**
      * Visit the given URI with a PUT request.
      *
-     * @param string $uri
-     *
+     * @param  string  $uri
      * @return $this
      */
     public function put($uri, array $data = [], array $headers = [])
@@ -102,8 +98,7 @@ trait MakesHttpRequests
     /**
      * Visit the given URI with a PATCH request.
      *
-     * @param string $uri
-     *
+     * @param  string  $uri
      * @return $this
      */
     public function patch($uri, array $data = [], array $headers = [])
@@ -118,8 +113,7 @@ trait MakesHttpRequests
     /**
      * Visit the given URI with a DELETE request.
      *
-     * @param string $uri
-     *
+     * @param  string  $uri
      * @return $this
      */
     public function delete($uri, array $data = [], array $headers = [])
@@ -134,8 +128,7 @@ trait MakesHttpRequests
     /**
      * Visit the given URI with a OPTIONS request.
      *
-     * @param string $uri
-     *
+     * @param  string  $uri
      * @return $this
      */
     public function options($uri, array $data = [], array $headers = [])
@@ -150,8 +143,7 @@ trait MakesHttpRequests
     /**
      * Visit the given URI with a HEAD request.
      *
-     * @param string $uri
-     *
+     * @param  string  $uri
      * @return $this
      */
     public function head($uri, array $data = [], array $headers = [])
@@ -184,7 +176,7 @@ trait MakesHttpRequests
      *
      * @return $this
      */
-    protected function shouldReturnJson(array $data = null)
+    protected function shouldReturnJson(?array $data = null)
     {
         return $this->receiveJson($data);
     }
@@ -192,8 +184,7 @@ trait MakesHttpRequests
     /**
      * Assert that the response contains JSON.
      *
-     * @param array|null $data
-     *
+     * @param  array|null  $data
      * @return $this|null
      */
     protected function receiveJson($data = null)
@@ -224,11 +215,10 @@ trait MakesHttpRequests
     /**
      * Assert that the response contains JSON.
      *
-     * @param bool $negate
-     *
+     * @param  bool  $negate
      * @return $this
      */
-    public function seeJson(array $data = null, $negate = false)
+    public function seeJson(?array $data = null, $negate = false)
     {
         if (is_null($data)) {
             $decodedResponse = json_decode($this->response->getBody()->getContents(), true);
@@ -250,7 +240,7 @@ trait MakesHttpRequests
      *
      * @return $this
      */
-    public function dontSeeJson(array $data = null)
+    public function dontSeeJson(?array $data = null)
     {
         return $this->seeJson($data, true);
     }
@@ -258,11 +248,10 @@ trait MakesHttpRequests
     /**
      * Assert that the JSON response has a given structure.
      *
-     * @param array|null $responseData
-     *
+     * @param  array|null  $responseData
      * @return $this
      */
-    public function seeJsonStructure(array $structure = null, $responseData = null)
+    public function seeJsonStructure(?array $structure = null, $responseData = null)
     {
         $this->assertJsonStructure($structure, $responseData);
 
@@ -272,11 +261,10 @@ trait MakesHttpRequests
     /**
      * Assert that the response has a given JSON structure.
      *
-     * @param array|null $responseData
-     *
+     * @param  array|null  $responseData
      * @return $this
      */
-    public function assertJsonStructure(array $structure = null, $responseData = null)
+    public function assertJsonStructure(?array $structure = null, $responseData = null)
     {
         $this->decodeResponseJson()->assertStructure($structure, $responseData);
 
@@ -310,8 +298,7 @@ trait MakesHttpRequests
     /**
      * Assert that the response contains the given JSON.
      *
-     * @param bool $negate
-     *
+     * @param  bool  $negate
      * @return $this
      */
     protected function seeJsonContains(array $data, $negate = false)
@@ -328,8 +315,7 @@ trait MakesHttpRequests
     /**
      * Assert that the response does not contain the given JSON fragment.
      *
-     * @param bool $exact
-     *
+     * @param  bool  $exact
      * @return $this
      */
     public function assertJsonMissing(array $data, $exact = false)
@@ -366,9 +352,8 @@ trait MakesHttpRequests
     /**
      * Format the given key and value into a JSON string for expectation checks.
      *
-     * @param string $key
-     * @param mixed  $value
-     *
+     * @param  string  $key
+     * @param  mixed  $value
      * @return string
      */
     protected function formatToExpectedJson($key, $value)
@@ -389,14 +374,13 @@ trait MakesHttpRequests
     /**
      * Call the given URI and return the Response.
      *
-     * @param string $method
-     * @param string $uri
-     * @param array  $parameters
-     * @param array  $cookies
-     * @param array  $files
-     * @param array  $server
-     * @param string $content
-     *
+     * @param  string  $method
+     * @param  string  $uri
+     * @param  array  $parameters
+     * @param  array  $cookies
+     * @param  array  $files
+     * @param  array  $server
+     * @param  string  $content
      * @return \Illuminate\Testing\TestResponse
      */
     public function call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
@@ -410,8 +394,8 @@ trait MakesHttpRequests
             $cookies,
             $files
         )
-        ->withMethod($method)
-        ->withUri((new UriFactory)->createUri($uri));
+            ->withMethod($method)
+            ->withUri((new UriFactory)->createUri($uri));
 
         return $this->response = $this->app->prepareResponse($this->app->handle($this->app['request']));
     }
@@ -419,8 +403,7 @@ trait MakesHttpRequests
     /**
      * Turn the given URI into a fully qualified URL.
      *
-     * @param string $uri
-     *
+     * @param  string  $uri
      * @return string
      */
     protected function prepareUrlForRequest($uri)
@@ -472,8 +455,7 @@ trait MakesHttpRequests
     /**
      * Assert that the client response has a given status code.
      *
-     * @param int $status
-     *
+     * @param  int  $status
      * @return void
      */
     public function assertResponseStatus($status)
@@ -484,8 +466,7 @@ trait MakesHttpRequests
     /**
      * Asserts that the status code of the response matches the given code.
      *
-     * @param int $status
-     *
+     * @param  int  $status
      * @return $this
      */
     protected function seeStatusCode($status)
@@ -498,9 +479,8 @@ trait MakesHttpRequests
     /**
      * Asserts that the response contains the given header and equals the optional value.
      *
-     * @param string $headerName
-     * @param mixed  $value
-     *
+     * @param  string  $headerName
+     * @param  mixed  $value
      * @return $this
      */
     protected function seeHeader($headerName, $value = null)
@@ -513,9 +493,8 @@ trait MakesHttpRequests
     /**
      * Asserts that the response contains the given header and equals the optional value.
      *
-     * @param string $headerName
-     * @param mixed  $value
-     *
+     * @param  string  $headerName
+     * @param  mixed  $value
      * @return $this
      */
     public function assertHeader($headerName, $value = null)
@@ -539,8 +518,7 @@ trait MakesHttpRequests
     /**
      * Assert that the response has the given status code.
      *
-     * @param int $status
-     *
+     * @param  int  $status
      * @return $this
      */
     public function assertStatus($status)
@@ -555,9 +533,8 @@ trait MakesHttpRequests
     /**
      * Get an assertion message for a status assertion containing extra details when available.
      *
-     * @param string|int $expected
-     * @param string|int $actual
-     *
+     * @param  string|int  $expected
+     * @param  string|int  $actual
      * @return string
      */
     protected function statusMessageWithDetails($expected, $actual)

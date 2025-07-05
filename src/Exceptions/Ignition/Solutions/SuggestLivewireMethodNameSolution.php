@@ -10,8 +10,7 @@ class SuggestLivewireMethodNameSolution implements Solution
         protected string $methodName,
         protected string $componentClass,
         protected string $suggested
-    ) {
-    }
+    ) {}
 
     public function getSolutionTitle(): string
     {

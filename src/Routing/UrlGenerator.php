@@ -47,8 +47,7 @@ class UrlGenerator
     /**
      * Create a new URL redirector instance.
      *
-     * @param \Laravel\Lumen\Application $app
-     *
+     * @param  \Laravel\Lumen\Application  $app
      * @return void
      */
     public function __construct(Application $app)
@@ -79,10 +78,9 @@ class UrlGenerator
     /**
      * Generate a url for the application.
      *
-     * @param string $path
-     * @param array  $extra
-     * @param bool   $secure
-     *
+     * @param  string  $path
+     * @param  array  $extra
+     * @param  bool  $secure
      * @return string
      */
     public function to($path, $extra = [], $secure = null)
@@ -113,9 +111,8 @@ class UrlGenerator
     /**
      * Generate a secure, absolute URL to the given path.
      *
-     * @param string $path
-     * @param array  $parameters
-     *
+     * @param  string  $path
+     * @param  array  $parameters
      * @return string
      */
     public function secure($path, $parameters = [])
@@ -126,9 +123,8 @@ class UrlGenerator
     /**
      * Generate a URL to an application asset.
      *
-     * @param string    $path
-     * @param bool|null $secure
-     *
+     * @param  string  $path
+     * @param  bool|null  $secure
      * @return string
      */
     public function asset($path, $secure = null)
@@ -148,10 +144,9 @@ class UrlGenerator
     /**
      * Generate a URL to an application asset from a root domain such as CDN etc.
      *
-     * @param string    $root
-     * @param string    $path
-     * @param bool|null $secure
-     *
+     * @param  string  $root
+     * @param  string  $path
+     * @param  bool|null  $secure
      * @return string
      */
     public function assetFrom($root, $path, $secure = null)
@@ -167,8 +162,7 @@ class UrlGenerator
     /**
      * Remove the index.php file from a path.
      *
-     * @param string $root
-     *
+     * @param  string  $root
      * @return string
      */
     protected function removeIndex($root)
@@ -181,8 +175,7 @@ class UrlGenerator
     /**
      * Generate a URL to a secure asset.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function secureAsset($path)
@@ -193,8 +186,7 @@ class UrlGenerator
     /**
      * Force the schema for URLs.
      *
-     * @param string $schema
-     *
+     * @param  string  $schema
      * @return void
      */
     public function forceScheme($schema)
@@ -207,8 +199,7 @@ class UrlGenerator
     /**
      * Get the default scheme for a raw URL.
      *
-     * @param bool|null $secure
-     *
+     * @param  bool|null  $secure
      * @return string
      */
     public function formatScheme($secure)
@@ -227,10 +218,9 @@ class UrlGenerator
     /**
      * Get the URL to a named route.
      *
-     * @param string    $name
-     * @param mixed     $parameters
-     * @param bool|null $secure
-     *
+     * @param  string  $name
+     * @param  mixed  $parameters
+     * @param  bool|null  $secure
      * @return string
      *
      * @throws \InvalidArgumentException
@@ -265,8 +255,7 @@ class UrlGenerator
     /**
      * Determine if the given path is a valid URL.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return bool
      */
     public function isValidUrl($path)
@@ -281,8 +270,7 @@ class UrlGenerator
     /**
      * Get the scheme for a raw URL.
      *
-     * @param bool|null $secure
-     *
+     * @param  bool|null  $secure
      * @return string
      */
     protected function getSchemeForUrl($secure)
@@ -301,8 +289,7 @@ class UrlGenerator
     /**
      * Format the array of URL parameters.
      *
-     * @param mixed|array $parameters
-     *
+     * @param  mixed|array  $parameters
      * @return array
      */
     public function formatParameters($parameters)
@@ -321,9 +308,8 @@ class UrlGenerator
     /**
      * Replace the route parameters with their parameter.
      *
-     * @param string $route
-     * @param array  $parameters
-     *
+     * @param  string  $route
+     * @param  array  $parameters
      * @return string
      */
     protected function replaceRouteParameters($route, &$parameters = [])
@@ -336,9 +322,8 @@ class UrlGenerator
     /**
      * Get the base URL for the request.
      *
-     * @param string $scheme
-     * @param string $root
-     *
+     * @param  string  $scheme
+     * @param  string  $root
      * @return string
      */
     protected function getRootUrl($scheme, $root = null)
@@ -361,8 +346,7 @@ class UrlGenerator
     /**
      * Set the forced root URL.
      *
-     * @param string $root
-     *
+     * @param  string  $root
      * @return void
      */
     public function forceRootUrl($root)
@@ -375,10 +359,9 @@ class UrlGenerator
     /**
      * Format the given URL segments into a single URL.
      *
-     * @param string $root
-     * @param string $path
-     * @param string $tail
-     *
+     * @param  string  $root
+     * @param  string  $path
+     * @param  string  $tail
      * @return string
      */
     protected function trimUrl($root, $path, $tail = '')

@@ -29,8 +29,6 @@ use Mini\Framework\Routing\RoutingClosure;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\RequestHandlerInterface;
-use ReflectionClass;
 use RuntimeException;
 use stdClass;
 use Throwable;
@@ -75,8 +73,7 @@ trait RoutesRequests
     /**
      * Add new middleware to the application.
      *
-     * @param Closure|array $middleware
-     *
+     * @param  Closure|array  $middleware
      * @return $this
      */
     public function middleware($middleware)
@@ -123,8 +120,7 @@ trait RoutesRequests
     /**
      * Call the terminable middleware.
      *
-     * @param mixed $response
-     *
+     * @param  mixed  $response
      * @return void
      */
     protected function callTerminableMiddleware($response)
@@ -163,8 +159,8 @@ trait RoutesRequests
                 $this->instance(ServerRequestInterface::class, $request);
                 $this->instance(ServerRequest::class, $request);
 
-                if (isset($this->router->getRoutes()[$method . $pathInfo])) {
-                    return $this->handleFoundRoute([true, $this->router->getRoutes()[$method . $pathInfo]['action'], []]);
+                if (isset($this->router->getRoutes()[$method.$pathInfo])) {
+                    return $this->handleFoundRoute([true, $this->router->getRoutes()[$method.$pathInfo]['action'], []]);
                 }
 
                 return $this->handleDispatcherResponse(
@@ -187,7 +183,7 @@ trait RoutesRequests
         $this->instance(ServerRequestInterface::class, $request);
         $this->instance(ServerRequest::class, $request);
 
-        return [$request->getMethod(), '/' . trim($request->getUri()->getPath(), '/')];
+        return [$request->getMethod(), '/'.trim($request->getUri()->getPath(), '/')];
     }
 
     /**
@@ -217,8 +213,7 @@ trait RoutesRequests
     /**
      * Handle the response from the FastRoute dispatcher.
      *
-     * @param array $routeInfo
-     *
+     * @param  array  $routeInfo
      * @return mixed
      */
     protected function handleDispatcherResponse($routeInfo)
@@ -236,8 +231,7 @@ trait RoutesRequests
     /**
      * Handle a route found by the dispatcher.
      *
-     * @param array $routeInfo
-     *
+     * @param  array  $routeInfo
      * @return mixed
      */
     protected function handleFoundRoute($routeInfo)
@@ -269,8 +263,7 @@ trait RoutesRequests
     /**
      * Call the Closure or invokable on the array based route.
      *
-     * @param array $routeInfo
-     *
+     * @param  array  $routeInfo
      * @return mixed
      */
     protected function callActionOnArrayBasedRoute($routeInfo)
@@ -307,8 +300,7 @@ trait RoutesRequests
     /**
      * Call a controller based route.
      *
-     * @param array $routeInfo
-     *
+     * @param  array  $routeInfo
      * @return mixed
      */
     protected function callControllerAction($routeInfo)
@@ -338,10 +330,9 @@ trait RoutesRequests
     /**
      * Send the request through a controller.
      *
-     * @param mixed  $instance
-     * @param string $method
-     * @param array  $routeInfo
-     *
+     * @param  mixed  $instance
+     * @param  string  $method
+     * @param  array  $routeInfo
      * @return mixed
      */
     protected function callController($instance, $method, $routeInfo)
@@ -366,11 +357,10 @@ trait RoutesRequests
     /**
      * Send the request through a set of controller middleware.
      *
-     * @param mixed  $instance
-     * @param string $method
-     * @param array  $routeInfo
-     * @param array  $middleware
-     *
+     * @param  mixed  $instance
+     * @param  string  $method
+     * @param  array  $routeInfo
+     * @param  array  $middleware
      * @return mixed
      */
     protected function callControllerWithMiddleware($instance, $method, $routeInfo, $middleware)
@@ -401,8 +391,7 @@ trait RoutesRequests
     /**
      * Gather the full class names for the middleware short-cut string.
      *
-     * @param string|array $middleware
-     *
+     * @param  string|array  $middleware
      * @return array
      */
     protected function gatherMiddlewareClassNames($middleware)
@@ -412,7 +401,7 @@ trait RoutesRequests
         return array_map(function ($name) {
             [$name, $parameters] = array_pad(explode(':', $name, 2), 2, null);
 
-            return Arr::get($this->routeMiddleware, $name, $name) . ($parameters ? ':' . $parameters : '');
+            return Arr::get($this->routeMiddleware, $name, $name).($parameters ? ':'.$parameters : '');
         }, $middleware);
     }
 
@@ -431,7 +420,7 @@ trait RoutesRequests
             return (new Pipeline($this))
                 ->send($request)
                 ->through($transformedMiddleware)
-                ->then(fn(ServerRequestInterface $request): ResponseInterface => $then($request));
+                ->then(fn (ServerRequestInterface $request): ResponseInterface => $then($request));
         }
 
         return $then($this->make('request'));
@@ -440,8 +429,7 @@ trait RoutesRequests
     /**
      * Prepare the response for sending.
      *
-     * @param mixed|ResponseInterface $response
-     *
+     * @param  mixed|ResponseInterface  $response
      * @return ResponseInterface
      */
     public function prepareResponse($response)
@@ -471,7 +459,7 @@ trait RoutesRequests
         }
 
         if (empty($response)) {
-            return new EmptyResponse();
+            return new EmptyResponse;
         }
 
         return (new ResponseFactory)->createResponse()

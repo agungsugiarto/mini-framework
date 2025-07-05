@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 class StringComparator
 {
     /**
-     * @param array<int|string, string> $strings
+     * @param  array<int|string, string>  $strings
      */
     public static function findClosestMatch(array $strings, string $input, int $sensitivity = 4): ?string
     {
@@ -39,7 +39,7 @@ class StringComparator
     }
 
     /**
-     * @param array<int, string> $strings
+     * @param  array<int, string>  $strings
      */
     public static function findSimilarText(array $strings, string $input): ?string
     {

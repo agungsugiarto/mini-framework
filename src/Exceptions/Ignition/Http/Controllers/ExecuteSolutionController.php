@@ -24,7 +24,7 @@ class ExecuteSolutionController extends Controller
 
         $solution->run($request->getQueryParams()['parameters'] ?? []);
 
-        return new EmptyResponse();
+        return new EmptyResponse;
     }
 
     public function ensureRunnableSolutionsEnabled(): self

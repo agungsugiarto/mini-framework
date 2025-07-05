@@ -28,7 +28,7 @@ trait InteractsWithContentTypes
      */
     public function isXmlHttpRequest()
     {
-        return 'XMLHttpRequest' == $this->getHeaderLine('X-Requested-With');
+        return $this->getHeaderLine('X-Requested-With') == 'XMLHttpRequest';
     }
 
     /**

@@ -16,8 +16,7 @@ class Controller
     /**
      * Define a middleware on the controller.
      *
-     * @param string $middleware
-     *
+     * @param  string  $middleware
      * @return void
      */
     public function middleware($middleware, array $options = [])
@@ -28,8 +27,7 @@ class Controller
     /**
      * Get the middleware for a given method.
      *
-     * @param string $method
-     *
+     * @param  string  $method
      * @return array
      */
     public function getMiddlewareForMethod($method)

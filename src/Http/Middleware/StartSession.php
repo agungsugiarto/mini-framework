@@ -69,7 +69,7 @@ class StartSession implements MiddlewareInterface
     /**
      * Handle the given request within session state.
      *
-     * @param Session $session
+     * @param  Session  $session
      */
     protected function handleRequestWhileBlocking(ServerRequestInterface $request, $session, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -95,7 +95,7 @@ class StartSession implements MiddlewareInterface
     /**
      * Handle the given request within session state.
      *
-     * @param Session $session
+     * @param  Session  $session
      */
     protected function handleStatefulRequest(ServerRequestInterface $request, $session, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -123,8 +123,7 @@ class StartSession implements MiddlewareInterface
     /**
      * Start the session for the given request.
      *
-     * @param Session $session
-     *
+     * @param  Session  $session
      * @return Session
      */
     protected function startSession(ServerRequestInterface $request, $session)
@@ -178,15 +177,14 @@ class StartSession implements MiddlewareInterface
     /**
      * Store the current URL for the request if necessary.
      *
-     * @param Session $session
-     *
+     * @param  Session  $session
      * @return void
      */
     protected function storeCurrentUrl(ServerRequestInterface $request, $session)
     {
         if ($request->getMethod() === 'GET' &&
             $this->hasRoute($request) &&
-            'XMLHttpRequest' !== $request->getHeaderLine('X-Requested-With')) {
+            $request->getHeaderLine('X-Requested-With') !== 'XMLHttpRequest') {
             $session->setPreviousUrl($request->getUri()->getPath());
         }
     }
@@ -252,7 +250,7 @@ class StartSession implements MiddlewareInterface
      *
      * @return bool
      */
-    protected function sessionIsPersistent(array $config = null)
+    protected function sessionIsPersistent(?array $config = null)
     {
         $config = $config ?: $this->manager->getSessionConfig();
 
@@ -262,8 +260,7 @@ class StartSession implements MiddlewareInterface
     /**
      * Resolve the given cache driver.
      *
-     * @param string $driver
-     *
+     * @param  string  $driver
      * @return \Illuminate\Cache\Store
      */
     protected function cache($driver)

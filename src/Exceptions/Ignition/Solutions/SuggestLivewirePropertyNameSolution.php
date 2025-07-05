@@ -10,8 +10,7 @@ class SuggestLivewirePropertyNameSolution implements Solution
         protected string $variableName,
         protected string $componentClass,
         protected string $suggested,
-    ) {
-    }
+    ) {}
 
     public function getSolutionTitle(): string
     {

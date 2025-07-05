@@ -66,7 +66,7 @@ class FlareLogHandler extends AbstractProcessingHandler
     }
 
     /**
-     * @param array<string, mixed> $report
+     * @param  array<string, mixed>  $report
      */
     protected function shouldReport(array $report): bool
     {
@@ -78,7 +78,7 @@ class FlareLogHandler extends AbstractProcessingHandler
     }
 
     /**
-     * @param array<string, mixed> $report
+     * @param  array<string, mixed>  $report
      */
     protected function hasException(array $report): bool
     {
@@ -88,7 +88,7 @@ class FlareLogHandler extends AbstractProcessingHandler
     }
 
     /**
-     * @param array<string, mixed> $report
+     * @param  array<string, mixed>  $report
      */
     protected function hasValidLogLevel(array $report): bool
     {

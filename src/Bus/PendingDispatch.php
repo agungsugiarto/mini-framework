@@ -19,8 +19,7 @@ class PendingDispatch
     /**
      * Create a new pending job dispatch.
      *
-     * @param mixed $job
-     *
+     * @param  mixed  $job
      * @return void
      */
     public function __construct($job)
@@ -31,8 +30,7 @@ class PendingDispatch
     /**
      * Set the desired connection for the job.
      *
-     * @param string|null $connection
-     *
+     * @param  string|null  $connection
      * @return $this
      */
     public function onConnection($connection)
@@ -45,8 +43,7 @@ class PendingDispatch
     /**
      * Set the desired queue for the job.
      *
-     * @param string|null $queue
-     *
+     * @param  string|null  $queue
      * @return $this
      */
     public function onQueue($queue)

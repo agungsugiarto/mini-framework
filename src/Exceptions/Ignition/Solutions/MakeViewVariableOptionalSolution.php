@@ -12,7 +12,7 @@ class MakeViewVariableOptionalSolution implements RunnableSolution
 
     protected ?string $viewFile;
 
-    public function __construct(string $variableName = null, string $viewFile = null)
+    public function __construct(?string $variableName = null, ?string $viewFile = null)
     {
         $this->variableName = $variableName;
 
@@ -58,7 +58,7 @@ class MakeViewVariableOptionalSolution implements RunnableSolution
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param  array<string, mixed>  $parameters
      */
     public function isRunnable(array $parameters = []): bool
     {
@@ -66,7 +66,7 @@ class MakeViewVariableOptionalSolution implements RunnableSolution
     }
 
     /**
-     * @param array<string, string> $parameters
+     * @param  array<string, string>  $parameters
      */
     public function run(array $parameters = []): void
     {
@@ -89,7 +89,7 @@ class MakeViewVariableOptionalSolution implements RunnableSolution
     }
 
     /**
-     * @param array<string, string> $parameters
+     * @param  array<string, string>  $parameters
      */
     public function makeOptional(array $parameters = []): bool|string
     {
@@ -113,8 +113,7 @@ class MakeViewVariableOptionalSolution implements RunnableSolution
     }
 
     /**
-     * @param array<int, mixed> $originalTokens
-     *
+     * @param  array<int, mixed>  $originalTokens
      * @return array<int, mixed>
      */
     protected function generateExpectedTokens(array $originalTokens, string $variableName): array

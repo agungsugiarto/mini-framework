@@ -107,7 +107,7 @@ class IgnitionServiceProvider extends ServiceProvider
                 ->setBaseUrl(config('flare.base_url', 'https://flareapp.io/api'))
                 ->applicationPath(base_path())
                 ->setStage(app()->environment())
-                ->setContextProviderDetector(new LaravelContextProviderDetector())
+                ->setContextProviderDetector(new LaravelContextProviderDetector)
                 ->registerMiddleware($this->getFlareMiddleware())
                 ->registerMiddleware(new AddSolutions(new SolutionProviderRepository($this->getSolutionProviders())));
         });
@@ -122,7 +122,7 @@ class IgnitionServiceProvider extends ServiceProvider
             fn () => new FileConfigManager(config('ignition.settings_file_path', ''))
         );
 
-        $ignitionConfig = (new IgnitionConfig())
+        $ignitionConfig = (new IgnitionConfig)
             ->merge(config('ignition', []))
             ->loadConfigFile();
 
@@ -135,7 +135,7 @@ class IgnitionServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             Ignition::class,
-            fn () => (new Ignition())
+            fn () => (new Ignition)
                 ->applicationPath(base_path())
         );
     }

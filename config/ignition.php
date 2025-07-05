@@ -1,8 +1,5 @@
 <?php
 
-use Spatie\Ignition\Solutions\SolutionProviders\BadMethodCallSolutionProvider;
-use Spatie\Ignition\Solutions\SolutionProviders\MergeConflictSolutionProvider;
-use Spatie\Ignition\Solutions\SolutionProviders\UndefinedPropertySolutionProvider;
 use Mini\Framework\Exceptions\Ignition\Recorders\DumpRecorder\DumpRecorder;
 use Mini\Framework\Exceptions\Ignition\Recorders\JobRecorder\JobRecorder;
 use Mini\Framework\Exceptions\Ignition\Recorders\LogRecorder\LogRecorder;
@@ -21,6 +18,9 @@ use Mini\Framework\Exceptions\Ignition\Solutions\SolutionProviders\TableNotFound
 use Mini\Framework\Exceptions\Ignition\Solutions\SolutionProviders\UndefinedViewVariableSolutionProvider;
 use Mini\Framework\Exceptions\Ignition\Solutions\SolutionProviders\UnknownValidationSolutionProvider;
 use Mini\Framework\Exceptions\Ignition\Solutions\SolutionProviders\ViewNotFoundSolutionProvider;
+use Spatie\Ignition\Solutions\SolutionProviders\BadMethodCallSolutionProvider;
+use Spatie\Ignition\Solutions\SolutionProviders\MergeConflictSolutionProvider;
+use Spatie\Ignition\Solutions\SolutionProviders\UndefinedPropertySolutionProvider;
 
 return [
 
@@ -227,6 +227,6 @@ return [
         DumpRecorder::class,
         JobRecorder::class,
         LogRecorder::class,
-        QueryRecorder::class
-    ]
+        QueryRecorder::class,
+    ],
 ];

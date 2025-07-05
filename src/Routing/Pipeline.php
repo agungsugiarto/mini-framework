@@ -54,8 +54,7 @@ class Pipeline extends BasePipeline
     /**
      * Handle the given exception.
      *
-     * @param mixed $passable
-     *
+     * @param  mixed  $passable
      * @return mixed
      */
     protected function handleException($passable, Throwable $e)

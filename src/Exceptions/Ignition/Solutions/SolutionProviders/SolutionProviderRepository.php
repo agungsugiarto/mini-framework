@@ -14,7 +14,7 @@ class SolutionProviderRepository implements SolutionProviderRepositoryContract
     protected Collection $solutionProviders;
 
     /**
-     * @param array<int, ProvidesSolution> $solutionProviders
+     * @param  array<int, ProvidesSolution>  $solutionProviders
      */
     public function __construct(array $solutionProviders = [])
     {

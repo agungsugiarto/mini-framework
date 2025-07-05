@@ -81,8 +81,7 @@ class ViewNotFoundSolutionProvider implements HasSolutionsForThrowable
     }
 
     /**
-     * @param array<int, string> $extensions
-     *
+     * @param  array<int, string>  $extensions
      * @return array<int, string>
      */
     protected function getViewsInPath(string $path, array $extensions): array
@@ -91,7 +90,7 @@ class ViewNotFoundSolutionProvider implements HasSolutionsForThrowable
 
         $extensionsWithDots = array_map(fn (string $extension) => ".{$extension}", $extensions);
 
-        $files = (new Finder())
+        $files = (new Finder)
             ->in($path)
             ->files();
 

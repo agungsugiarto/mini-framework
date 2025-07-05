@@ -24,7 +24,7 @@ class FullApplicationTest extends TestCase
         m::close();
     }
 
-    public function testBasicRequest()
+    public function test_basic_request()
     {
         $app = new Application;
 
@@ -40,7 +40,7 @@ class FullApplicationTest extends TestCase
         $this->assertInstanceOf(ServerRequestInterface::class, $request);
     }
 
-    public function testBasicLaminasRequest()
+    public function test_basic_laminas_request()
     {
         $app = new Application;
 
@@ -52,7 +52,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testAddRouteMultipleMethodRequest()
+    public function test_add_route_multiple_method_request()
     {
         $app = new Application;
 
@@ -75,7 +75,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Hello World', $response->getBody()->getContents());
     }
 
-    public function testRequestWithParameters()
+    public function test_request_with_parameters()
     {
         $app = new Application;
 
@@ -92,7 +92,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals(2, $request->route('baz'));
     }
 
-    public function testCallbackRouteWithDefaultParameter()
+    public function test_callback_route_with_default_parameter()
     {
         $app = new Application;
         $app->router->get('/foo-bar/{baz}', function ($baz = 'default-value') {
@@ -105,7 +105,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('something', $response->getBody()->getContents());
     }
 
-    public function testGlobalMiddleware()
+    public function test_global_middleware()
     {
         $app = new Application;
 
@@ -121,7 +121,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Middleware', $response->getBody()->getContents());
     }
 
-    public function testRouteMiddleware()
+    public function test_route_middleware()
     {
         $app = new Application;
 
@@ -160,7 +160,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Middleware', $response->getBody()->getContents());
     }
 
-    public function testGlobalMiddlewareParameters()
+    public function test_global_middleware_parameters()
     {
         $app = new Application;
 
@@ -176,7 +176,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Middleware - foo - bar', $response->getBody()->getContents());
     }
 
-    public function testRouteMiddlewareParameters()
+    public function test_route_middleware_parameters()
     {
         $app = new Application;
 
@@ -192,7 +192,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Middleware - bar - boom', $response->getBody()->getContents());
     }
 
-    public function testWithMiddlewareDisabled()
+    public function test_with_middleware_disabled()
     {
         $app = new Application;
 
@@ -209,7 +209,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Hello World', $response->getBody()->getContents());
     }
 
-    public function testTerminableGlobalMiddleware()
+    public function test_terminable_global_middleware()
     {
         $app = new class extends Application
         {
@@ -257,7 +257,7 @@ class FullApplicationTest extends TestCase
     //     $this->assertEquals('Hello World', $response->getContent());
     // }
 
-    public function testNotFoundResponse()
+    public function test_not_found_response()
     {
         $app = new Application;
         $app->instance(ExceptionHandler::class, $mock = m::mock('Mini\Framework\Exceptions\Handler[report]'));
@@ -272,7 +272,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals(404, $response->getStatusCode());
     }
 
-    public function testMethodNotAllowedResponse()
+    public function test_method_not_allowed_response()
     {
         $app = new Application;
         $app->instance(ExceptionHandler::class, $mock = m::mock('Mini\Framework\Exceptions\Handler[report]'));
@@ -301,7 +301,7 @@ class FullApplicationTest extends TestCase
     //     $this->assertEquals(999, $response->original);
     // }
 
-    public function testUncaughtExceptionResponse()
+    public function test_uncaught_exception_response()
     {
         $app = new Application;
         $app->instance(ExceptionHandler::class, $mock = m::mock('Mini\Framework\Exceptions\Handler[report]'));
@@ -315,7 +315,7 @@ class FullApplicationTest extends TestCase
         $this->assertInstanceOf(Response::class, $response);
     }
 
-    public function testGeneratingUrls()
+    public function test_generating_urls()
     {
         $app = new Application;
         $app->instance('request', (new ServerRequestFactory)->createServerRequest('GET', 'http://lumen.laravel.com'));
@@ -346,7 +346,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('http://lumen.laravel.com/foo-bar/1', route('regex', ['baz' => 1]));
     }
 
-    public function testGeneratingUrlsForRegexParameters()
+    public function test_generating_urls_for_regex_parameters()
     {
         $app = new Application;
         $app->instance('request', (new ServerRequestFactory)->createServerRequest('GET', 'http://lumen.laravel.com'));
@@ -375,7 +375,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('http://lumen.laravel.com/foo-bar/5', route('boom', ['baz' => 5]));
     }
 
-    public function testRegisterServiceProvider()
+    public function test_register_service_provider()
     {
         $app = new Application;
         $provider = new LumenTestServiceProvider($app);
@@ -384,9 +384,9 @@ class FullApplicationTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testApplicationBootsServiceProvidersOnBoot()
+    public function test_application_boots_service_providers_on_boot()
     {
-        $app = new Application();
+        $app = new Application;
 
         $provider = new LumenBootableTestServiceProvider($app);
         $app->register($provider);
@@ -396,18 +396,18 @@ class FullApplicationTest extends TestCase
         $this->assertTrue($provider->booted);
     }
 
-    public function testRegisterServiceProviderAfterBoot()
+    public function test_register_service_provider_after_boot()
     {
-        $app = new Application();
+        $app = new Application;
         $provider = new LumenBootableTestServiceProvider($app);
         $app->boot();
         $app->register($provider);
         $this->assertTrue($provider->booted);
     }
 
-    public function testApplicationBootsOnlyOnce()
+    public function test_application_boots_only_once()
     {
-        $app = new Application();
+        $app = new Application;
         $provider = new class($app) extends Illuminate\Support\ServiceProvider
         {
             public $bootCount = 0;
@@ -424,9 +424,9 @@ class FullApplicationTest extends TestCase
         $this->assertEquals(1, $provider->bootCount);
     }
 
-    public function testApplicationBootsWhenRequestIsDispatched()
+    public function test_application_boots_when_request_is_dispatched()
     {
-        $app = new Application();
+        $app = new Application;
         $app->router->get('/', function () {
             return 'Hello World';
         });
@@ -436,7 +436,7 @@ class FullApplicationTest extends TestCase
         $this->assertTrue($provider->booted);
     }
 
-    public function testUsingCustomDispatcher()
+    public function test_using_custom_dispatcher()
     {
         $routes = new FastRoute\RouteCollector(new FastRoute\RouteParser\Std, new FastRoute\DataGenerator\GroupCountBased);
 
@@ -454,7 +454,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Hello World', $response->getBody()->getContents());
     }
 
-    public function testMiddlewareReceiveResponsesEvenWhenStringReturned()
+    public function test_middleware_receive_responses_even_when_string_returned()
     {
         unset($_SERVER['__middleware.response']);
 
@@ -472,7 +472,7 @@ class FullApplicationTest extends TestCase
         $this->assertTrue($_SERVER['__middleware.response']);
     }
 
-    public function testBasicControllerDispatching()
+    public function test_basic_controller_dispatching()
     {
         $app = new Application;
 
@@ -484,7 +484,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('25', $response->getBody()->getContents());
     }
 
-    public function testBasicControllerDispatchingWithGroup()
+    public function test_basic_controller_dispatching_with_group()
     {
         $app = new Application;
         $app->routeMiddleware(['test' => MiniTestMiddleware::class]);
@@ -499,7 +499,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Middleware', $response->getBody()->getContents());
     }
 
-    public function testBasicControllerDispatchingWithGroupSuffix()
+    public function test_basic_controller_dispatching_with_group_suffix()
     {
         $app = new Application;
         $app->routeMiddleware(['test' => MiniTestMiddleware::class]);
@@ -514,7 +514,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('25', $response->getBody()->getContents());
     }
 
-    public function testBasicControllerDispatchingWithGroupAndSuffixWithPath()
+    public function test_basic_controller_dispatching_with_group_and_suffix_with_path()
     {
         $app = new Application;
         $app->routeMiddleware(['test' => MiniTestMiddleware::class]);
@@ -529,7 +529,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('test', $response->getBody()->getContents());
     }
 
-    public function testBasicControllerDispatchingWithMiddlewareIntercept()
+    public function test_basic_controller_dispatching_with_middleware_intercept()
     {
         $app = new Application;
         $app->routeMiddleware(['test' => MiniTestMiddleware::class]);
@@ -541,7 +541,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Middleware', $response->getBody()->getContents());
     }
 
-    public function testBasicInvokableActionDispatching()
+    public function test_basic_invokable_action_dispatching()
     {
         $app = new Application;
 
@@ -553,7 +553,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('199', $response->getBody()->getContents());
     }
 
-    public function testEnvironmentDetection()
+    public function test_environment_detection()
     {
         $app = new Application;
 
@@ -562,21 +562,21 @@ class FullApplicationTest extends TestCase
         $this->assertTrue($app->environment(['production']));
     }
 
-    public function testNamespaceDetection()
+    public function test_namespace_detection()
     {
         $app = new Application;
         $this->expectException('RuntimeException');
         $app->getNamespace();
     }
 
-    public function testRunningUnitTestsDetection()
+    public function test_running_unit_tests_detection()
     {
         $app = new Application;
 
         $this->assertFalse($app->runningUnitTests());
     }
 
-    public function testValidationHelpers()
+    public function test_validation_helpers()
     {
         $app = new Application;
 
@@ -600,7 +600,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals($response->getBody()->getContents(), '{"name":"Jon"}');
     }
 
-    public function testRedirectResponse()
+    public function test_redirect_response()
     {
         $app = new Application;
 
@@ -613,7 +613,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals(302, $response->getStatusCode());
     }
 
-    public function testRedirectToNamedRoute()
+    public function test_redirect_to_named_route()
     {
         $app = new Application;
 
@@ -647,27 +647,27 @@ class FullApplicationTest extends TestCase
     //     $this->assertSame('1234', $response->getContent());
     // }
 
-    public function testCanResolveFilesystemFactoryFromContract()
+    public function test_can_resolve_filesystem_factory_from_contract()
     {
-        $app = new Application();
+        $app = new Application;
 
         $filesystem = $app[Illuminate\Contracts\Filesystem\Factory::class];
 
         $this->assertInstanceOf(Illuminate\Contracts\Filesystem\Factory::class, $filesystem);
     }
 
-    public function testCanResolveValidationFactoryFromContract()
+    public function test_can_resolve_validation_factory_from_contract()
     {
-        $app = new Application();
+        $app = new Application;
 
         $validator = $app[Factory::class];
 
         $this->assertInstanceOf(Factory::class, $validator);
     }
 
-    public function testCanMergeUserProvidedFacadesWithDefaultOnes()
+    public function test_can_merge_user_provided_facades_with_default_ones()
     {
-        $app = new Application();
+        $app = new Application;
 
         $aliases = [
             UserFacade::class => 'Foo',
@@ -678,9 +678,9 @@ class FullApplicationTest extends TestCase
         $this->assertTrue(class_exists('Foo'));
     }
 
-    public function testNestedGroupMiddlewaresRequest()
+    public function test_nested_group_middlewares_request()
     {
-        $app = new Application();
+        $app = new Application;
 
         $app->router->group(['middleware' => 'middleware1'], function ($router) {
             $router->group(['middleware' => 'middleware2|middleware3'], function ($router) {
@@ -697,9 +697,9 @@ class FullApplicationTest extends TestCase
         ], $route['action']['middleware']);
     }
 
-    public function testNestedGroupNamespaceRequest()
+    public function test_nested_group_namespace_request()
     {
-        $app = new Application();
+        $app = new Application;
 
         $app->router->group(['namespace' => 'Hello'], function ($router) {
             $router->group(['namespace' => 'World'], function ($router) {
@@ -714,9 +714,9 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Hello\\World\\Class@method', $route['action']['uses']);
     }
 
-    public function testNestedGroupNamespaceWithFQCNClassName()
+    public function test_nested_group_namespace_with_fqcn_class_name()
     {
-        $app = new Application();
+        $app = new Application;
 
         $app->router->group(['namespace' => 'Hello'], function ($router) {
             $router->group(['namespace' => 'World'], function ($router) {
@@ -731,9 +731,9 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('\\Global\\Namespaced\\Class@method', $route['action']['uses']);
     }
 
-    public function testNestedGroupPrefixRequest()
+    public function test_nested_group_prefix_request()
     {
-        $app = new Application();
+        $app = new Application;
 
         $app->router->group(['prefix' => 'hello'], function ($router) {
             $router->group(['prefix' => 'world'], function ($router) {
@@ -746,9 +746,9 @@ class FullApplicationTest extends TestCase
         $this->assertArrayHasKey('GET/hello/world/world', $routes);
     }
 
-    public function testNestedGroupAsRequest()
+    public function test_nested_group_as_request()
     {
-        $app = new Application();
+        $app = new Application;
 
         $app->router->group(['as' => 'hello'], function ($router) {
             $router->group(['as' => 'world'], function ($router) {
@@ -760,9 +760,9 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('/world', $app->router->namedRoutes['hello.world']);
     }
 
-    public function testContainerBindingsAreNotOverwritten()
+    public function test_container_bindings_are_not_overwritten()
     {
-        $app = new Application();
+        $app = new Application;
 
         $mock = m::mock(Illuminate\Bus\Dispatcher::class);
 
@@ -774,16 +774,16 @@ class FullApplicationTest extends TestCase
         );
     }
 
-    public function testApplicationClassCanBeOverwritten()
+    public function test_application_class_can_be_overwritten()
     {
-        $app = new LumenTestApplication();
+        $app = new LumenTestApplication;
 
         $this->assertInstanceOf(LumenTestApplication::class, $app->make(Application::class));
     }
 
-    public function testRequestIsReboundOnDispatch()
+    public function test_request_is_rebound_on_dispatch()
     {
-        $app = new Application();
+        $app = new Application;
         $app->router->get('/', function () {
             return 'Hello World';
         });
@@ -795,18 +795,18 @@ class FullApplicationTest extends TestCase
         $this->assertTrue($rebound);
     }
 
-    public function testBatchesTableCommandIsRegistered()
+    public function test_batches_table_command_is_registered()
     {
-        $app = new LumenTestApplication();
+        $app = new LumenTestApplication;
         $app->register(ConsoleServiceProvider::class);
         $command = $app->make('command.queue.batches-table');
         $this->assertNotNull($command);
         $this->assertEquals('queue:batches-table', $command->getName());
     }
 
-    public function testHandlingCommandsTerminatesApplication()
+    public function test_handling_commands_terminates_application()
     {
-        $app = new LumenTestApplication();
+        $app = new LumenTestApplication;
         $app->register(ConsoleServiceProvider::class);
         $app->register(ViewServiceProvider::class);
 
@@ -826,12 +826,12 @@ class FullApplicationTest extends TestCase
 
         $input = new ArrayInput(['command' => 'send:emails']);
 
-        $command = $kernel->handle($input, new NullOutput());
+        $command = $kernel->handle($input, new NullOutput);
 
         $this->assertTrue($terminated);
     }
 
-    public function testTerminationTests()
+    public function test_termination_tests()
     {
         $app = new LumenTestApplication;
 
@@ -857,7 +857,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals([1, 2, 3], $result);
     }
 
-    public function testStartSessionMiddleware()
+    public function test_start_session_middleware()
     {
         $app = new Application;
 
@@ -880,7 +880,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Hello World', $response->getBody()->getContents());
     }
 
-    public function testStartSessionMiddlewareWithoutSessionConfig()
+    public function test_start_session_middleware_without_session_config()
     {
         $app = new Application;
 
@@ -902,7 +902,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Session Not Configured', $response->getBody()->getContents());
     }
 
-    public function testStartSessionMiddlewareWithConfiguredSession()
+    public function test_start_session_middleware_with_configured_session()
     {
         $app = new Application;
 
@@ -928,7 +928,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Minimal Session Test', $response->getBody()->getContents());
     }
 
-    public function testMiddlewareBeforeAndAfterResponse()
+    public function test_middleware_before_and_after_response()
     {
         $app = new Application;
 
@@ -947,7 +947,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('executed', $response->getHeaderLine('X-After-Middleware'));
     }
 
-    public function testMiddlewareModifyRequest()
+    public function test_middleware_modify_request()
     {
         $app = new Application;
 
@@ -966,7 +966,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Request data: modified-by-middleware', $response->getBody()->getContents());
     }
 
-    public function testMiddlewareModifyResponse()
+    public function test_middleware_modify_response()
     {
         $app = new Application;
 
@@ -983,7 +983,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('response-middleware', $response->getHeaderLine('X-Modified-By'));
     }
 
-    public function testMultipleMiddlewareChain()
+    public function test_multiple_middleware_chain()
     {
         $app = new Application;
 
@@ -1010,7 +1010,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('response-middleware', $response->getHeaderLine('X-Modified-By'));
     }
 
-    public function testRouteSpecificMiddlewareBeforeAfter()
+    public function test_route_specific_middleware_before_after()
     {
         $app = new Application;
 
@@ -1054,7 +1054,7 @@ class FullApplicationTest extends TestCase
         );
     }
 
-    public function testConditionalMiddleware()
+    public function test_conditional_middleware()
     {
         $app = new Application;
 
@@ -1104,7 +1104,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('processed', $response->getHeaderLine('X-Special-Response'));
     }
 
-    public function testTerminableMiddleware()
+    public function test_terminable_middleware()
     {
         $terminationLog = [];
 
@@ -1178,7 +1178,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals(['process', 'terminate', 200], $app->getTerminationLog());
     }
 
-    public function testTerminableMiddlewareFullLifecycle()
+    public function test_terminable_middleware_full_lifecycle()
     {
         $terminationLog = [];
 
@@ -1229,7 +1229,7 @@ class FullApplicationTest extends TestCase
                 return $this->terminationLog;
             }
 
-            public function testRun(?ServerRequestInterface $request = null)
+            public function test_run(?ServerRequestInterface $request = null)
             {
                 $request ??= ServerRequestFactory::fromGlobals();
 
@@ -1271,7 +1271,7 @@ class FullApplicationTest extends TestCase
         $this->assertEquals('Lifecycle Test', $response->getBody()->getContents());
     }
 
-    public function testTerminableMiddlewareWithParametersAndTermination()
+    public function test_terminable_middleware_with_parameters_and_termination()
     {
         // Create a simple test to verify that parameterized terminable middleware works
         $app = new class extends Application
@@ -1305,15 +1305,11 @@ class FullApplicationTest extends TestCase
     }
 }
 
-class LumenTestService
-{
-}
+class LumenTestService {}
 
 class LumenTestServiceProvider extends Illuminate\Support\ServiceProvider
 {
-    public function register()
-    {
-    }
+    public function register() {}
 }
 
 class LumenBootableTestServiceProvider extends Illuminate\Support\ServiceProvider
@@ -1409,7 +1405,7 @@ class MiniTestModifyResponseMiddleware implements Psr\Http\Server\MiddlewareInte
         $response->getBody()->rewind();
 
         return $response->withHeader('X-Modified-By', 'response-middleware')
-                       ->withBody((new StreamFactory)->createStream($originalBody.' - Modified'));
+            ->withBody((new StreamFactory)->createStream($originalBody.' - Modified'));
     }
 }
 
@@ -1447,9 +1443,7 @@ class LumenTestApplication extends Application
     }
 }
 
-class UserFacade
-{
-}
+class UserFacade {}
 
 class MiniTestTerminateMiddleware implements Psr\Http\Server\MiddlewareInterface
 {

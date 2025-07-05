@@ -23,8 +23,7 @@ class JobRecorder
     public function __construct(
         protected Application $app,
         protected int $maxChainedJobReportingDepth = 5,
-    ) {
-    }
+    ) {}
 
     public function start(): self
     {
@@ -129,7 +128,7 @@ class JobRecorder
     }
 
     /**
-     * @param array<string, mixed> $chainedCommands
+     * @param  array<string, mixed>  $chainedCommands
      */
     protected function resolveJobChain(array $chainedCommands, int $maxDepth): array
     {

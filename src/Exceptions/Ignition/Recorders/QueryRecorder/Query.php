@@ -22,14 +22,14 @@ class Query
         return new self(
             $queryExecuted->sql,
             $queryExecuted->time,
-            /* @phpstan-ignore-next-line  */
+            /* @phpstan-ignore-next-line */
             $queryExecuted->connectionName ?? '',
             $reportBindings ? $queryExecuted->bindings : null
         );
     }
 
     /**
-     * @param array<string, string>|null $bindings
+     * @param  array<string, string>|null  $bindings
      */
     protected function __construct(
         string $sql,

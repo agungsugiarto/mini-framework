@@ -130,9 +130,8 @@ abstract class TestCase extends BaseTestCase
     /**
      * Assert that a given where condition exists in the database.
      *
-     * @param string      $table
-     * @param string|null $onConnection
-     *
+     * @param  string  $table
+     * @param  string|null  $onConnection
      * @return $this
      */
     protected function seeInDatabase($table, array $data, $onConnection = null)
@@ -149,9 +148,8 @@ abstract class TestCase extends BaseTestCase
     /**
      * Assert that a given where condition does not exist in the database.
      *
-     * @param string      $table
-     * @param string|null $onConnection
-     *
+     * @param  string  $table
+     * @param  string|null  $onConnection
      * @return $this
      */
     protected function missingFromDatabase($table, array $data, $onConnection = null)
@@ -162,9 +160,8 @@ abstract class TestCase extends BaseTestCase
     /**
      * Assert that a given where condition does not exist in the database.
      *
-     * @param string      $table
-     * @param string|null $onConnection
-     *
+     * @param  string  $table
+     * @param  string|null  $onConnection
      * @return $this
      */
     protected function notSeeInDatabase($table, array $data, $onConnection = null)
@@ -183,8 +180,7 @@ abstract class TestCase extends BaseTestCase
      *
      * These events will be mocked, so that handlers will not actually be executed.
      *
-     * @param array|string $events
-     *
+     * @param  array|string  $events
      * @return $this
      */
     public function expectsEvents($events)
@@ -237,8 +233,7 @@ abstract class TestCase extends BaseTestCase
      *
      * These jobs will be mocked, so that handlers will not actually be executed.
      *
-     * @param array|string $jobs
-     *
+     * @param  array|string  $jobs
      * @return $this
      */
     protected function expectsJobs($jobs)
@@ -282,8 +277,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Set the currently logged in user for the application.
      *
-     * @param string|null $driver
-     *
+     * @param  string|null  $driver
      * @return $this
      */
     public function actingAs(Authenticatable $user, $driver = null)
@@ -296,8 +290,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Set the currently logged in user for the application.
      *
-     * @param string|null $driver
-     *
+     * @param  string|null  $driver
      * @return void
      */
     public function be(Authenticatable $user, $driver = null)
@@ -308,9 +301,8 @@ abstract class TestCase extends BaseTestCase
     /**
      * Call artisan command and return code.
      *
-     * @param string $command
-     * @param array  $parameters
-     *
+     * @param  string  $command
+     * @param  array  $parameters
      * @return int
      */
     public function artisan($command, $parameters = [])

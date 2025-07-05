@@ -19,7 +19,7 @@ class HandleExceptionsTest extends TestCase
     {
         $this->container = new Container;
 
-        $this->config = new Config();
+        $this->config = new Config;
 
         $this->container->singleton('config', function () {
             return $this->config;
@@ -33,7 +33,7 @@ class HandleExceptionsTest extends TestCase
         m::close();
     }
 
-    public function testPhpDeprecations()
+    public function test_php_deprecations()
     {
         $logger = m::mock(LogManager::class);
         $this->container->instance('log', $logger);
@@ -52,7 +52,7 @@ class HandleExceptionsTest extends TestCase
         );
     }
 
-    public function testUserDeprecations()
+    public function test_user_deprecations()
     {
         $logger = m::mock(LogManager::class);
         $this->container->instance('log', $logger);
@@ -71,7 +71,7 @@ class HandleExceptionsTest extends TestCase
         );
     }
 
-    public function testErrors()
+    public function test_errors()
     {
         $logger = m::mock(LogManager::class);
         $this->container->instance('log', $logger);
@@ -89,7 +89,7 @@ class HandleExceptionsTest extends TestCase
         );
     }
 
-    public function testEnsuresDeprecationsDriver()
+    public function test_ensures_deprecations_driver()
     {
         $logger = m::mock(LogManager::class);
         $this->container->instance('log', $logger);
@@ -120,7 +120,7 @@ class HandleExceptionsTest extends TestCase
         );
     }
 
-    public function testEnsuresNullDeprecationsDriver()
+    public function test_ensures_null_deprecations_driver()
     {
         $logger = m::mock(LogManager::class);
         $this->container->instance('log', $logger);
@@ -145,13 +145,13 @@ class HandleExceptionsTest extends TestCase
         );
     }
 
-    public function testNoDeprecationsDriverIfNoDeprecationsHereSend()
+    public function test_no_deprecations_driver_if_no_deprecations_here_send()
     {
         $this->assertEquals(null, $this->config->get('logging.deprecations'));
         $this->assertEquals(null, $this->config->get('logging.channels.deprecations'));
     }
 
-    public function testIgnoreDeprecationIfLoggerUnresolvable()
+    public function test_ignore_deprecation_if_logger_unresolvable()
     {
         $this->handleError(
             E_DEPRECATED,

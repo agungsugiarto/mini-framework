@@ -7,7 +7,7 @@ use Throwable;
 
 class LaravelRequestContextProvider extends RequestContextProvider
 {
-    protected null|ServerRequestInterface $request;
+    protected ?ServerRequestInterface $request;
 
     public function __construct(ServerRequestInterface $request)
     {
@@ -15,7 +15,7 @@ class LaravelRequestContextProvider extends RequestContextProvider
     }
 
     /** @return array<string, mixed>|null */
-    public function getUser(): array|null
+    public function getUser(): ?array
     {
         try {
             /** @var object|null $user */
@@ -45,7 +45,7 @@ class LaravelRequestContextProvider extends RequestContextProvider
     }
 
     /** @return array<string, mixed>|null */
-    public function getRoute(): array|null
+    public function getRoute(): ?array
     {
         /**
          * @phpstan-ignore-next-line

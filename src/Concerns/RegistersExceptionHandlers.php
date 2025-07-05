@@ -18,9 +18,8 @@ trait RegistersExceptionHandlers
     /**
      * Throw an HttpException with the given data.
      *
-     * @param int    $code
-     * @param string $message
-     *
+     * @param  int  $code
+     * @param  string  $message
      * @return void
      *
      * @throws HttpException
@@ -60,12 +59,11 @@ trait RegistersExceptionHandlers
     /**
      * Report PHP deprecations, or convert PHP errors to ErrorException instances.
      *
-     * @param int    $level
-     * @param string $message
-     * @param string $file
-     * @param int    $line
-     * @param array  $context
-     *
+     * @param  int  $level
+     * @param  string  $message
+     * @param  string  $file
+     * @param  int  $line
+     * @param  array  $context
      * @return void
      *
      * @throws ErrorException
@@ -84,10 +82,9 @@ trait RegistersExceptionHandlers
     /**
      * Reports a deprecation to the "deprecations" logger.
      *
-     * @param string $message
-     * @param string $file
-     * @param int    $line
-     *
+     * @param  string  $message
+     * @param  string  $file
+     * @param  int  $line
      * @return void
      */
     public function handleDeprecation($message, $file, $line)
@@ -144,8 +141,7 @@ trait RegistersExceptionHandlers
     /**
      * Create a new fatal error instance from an error array.
      *
-     * @param int|null $traceOffset
-     *
+     * @param  int|null  $traceOffset
      * @return FatalError
      */
     protected function fatalErrorFromPhpError(array $error, $traceOffset = null)
@@ -156,8 +152,7 @@ trait RegistersExceptionHandlers
     /**
      * Determine if the error level is a deprecation.
      *
-     * @param int $level
-     *
+     * @param  int  $level
      * @return bool
      */
     protected function isDeprecation($level)
@@ -168,8 +163,7 @@ trait RegistersExceptionHandlers
     /**
      * Determine if the error type is fatal.
      *
-     * @param int $type
-     *
+     * @param  int  $type
      * @return bool
      */
     protected function isFatal($type)

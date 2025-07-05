@@ -25,7 +25,7 @@ class DumpRecorder
 
     public function start(): self
     {
-        $multiDumpHandler = new MultiDumpHandler();
+        $multiDumpHandler = new MultiDumpHandler;
 
         $this->app->singleton(MultiDumpHandler::class, fn () => $multiDumpHandler);
 
@@ -53,7 +53,7 @@ class DumpRecorder
         $file = (string) Arr::get($sourceFrame, 'file');
         $lineNumber = (int) Arr::get($sourceFrame, 'line');
 
-        $htmlDump = (new HtmlDumper())->dump($data);
+        $htmlDump = (new HtmlDumper)->dump($data);
 
         $this->dumps[] = new Dump($htmlDump, $file, $lineNumber);
     }
@@ -106,8 +106,7 @@ class DumpRecorder
      *
      * @template T of array{class?: class-string, function?: string, line?: int, file?: string}
      *
-     * @param array<T> $stacktrace
-     *
+     * @param  array<T>  $stacktrace
      * @return T|null
      */
     protected function findSourceFrame(array $stacktrace): ?array

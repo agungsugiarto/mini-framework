@@ -59,7 +59,7 @@ class CorsService
     }
 
     /**
-     * @param array|CorsInputOptions $options
+     * @param  array|CorsInputOptions  $options
      */
     public function setOptions(array $options): void
     {
@@ -111,8 +111,7 @@ class CorsService
      *
      * @see https://github.com/laravel/framework/blob/5.5/src/Illuminate/Support/Str.php
      *
-     * @param string $pattern
-     *
+     * @param  string  $pattern
      * @return string
      */
     private function convertWildcardToPattern($pattern)

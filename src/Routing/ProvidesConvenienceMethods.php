@@ -84,8 +84,7 @@ trait ProvidesConvenienceMethods
     /**
      * Throw the failed validation exception.
      *
-     * @param \Illuminate\Contracts\Validation\Validator $validator
-     *
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
      * @return void
      *
      * @throws ValidationException
@@ -128,8 +127,7 @@ trait ProvidesConvenienceMethods
     /**
      * Dispatch a job to its appropriate handler.
      *
-     * @param mixed $job
-     *
+     * @param  mixed  $job
      * @return mixed
      */
     public function dispatch($job)
@@ -140,9 +138,8 @@ trait ProvidesConvenienceMethods
     /**
      * Dispatch a command to its appropriate handler in the current process.
      *
-     * @param mixed $job
-     * @param mixed $handler
-     *
+     * @param  mixed  $job
+     * @param  mixed  $handler
      * @return mixed
      */
     public function dispatchNow($job, $handler = null)

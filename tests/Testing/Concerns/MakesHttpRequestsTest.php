@@ -12,7 +12,7 @@ class MakesHttpRequestsTest extends TestCase
      * Placeholder test to avoid PHPUnit warning.
      * TODO: Implement actual tests for MakesHttpRequests trait.
      */
-    public function testPlaceholder()
+    public function test_placeholder()
     {
         $this->assertTrue(true);
     }

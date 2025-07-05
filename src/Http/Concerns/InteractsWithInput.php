@@ -38,8 +38,7 @@ trait InteractsWithInput
     /**
      * Determine if the request contains a given input item key.
      *
-     * @param string|array $key
-     *
+     * @param  string|array  $key
      * @return bool
      */
     public function exists($key)
@@ -50,8 +49,7 @@ trait InteractsWithInput
     /**
      * Determine if the request contains a given input item key.
      *
-     * @param string|array $key
-     *
+     * @param  string|array  $key
      * @return bool
      */
     public function has($key)
@@ -72,8 +70,7 @@ trait InteractsWithInput
     /**
      * Determine if the request contains any of the given inputs.
      *
-     * @param string|array $keys
-     *
+     * @param  string|array  $keys
      * @return bool
      */
     public function hasAny($keys)
@@ -88,11 +85,10 @@ trait InteractsWithInput
     /**
      * Apply the callback if the request contains the given input item key.
      *
-     * @param string $key
-     *
+     * @param  string  $key
      * @return $this|mixed
      */
-    public function whenHas($key, callable $callback, callable $default = null)
+    public function whenHas($key, callable $callback, ?callable $default = null)
     {
         if ($this->has($key)) {
             return $callback(data_get($this->all(), $key)) ?: $this;
@@ -108,8 +104,7 @@ trait InteractsWithInput
     /**
      * Determine if the request contains a non-empty value for an input item.
      *
-     * @param string|array $key
-     *
+     * @param  string|array  $key
      * @return bool
      */
     public function filled($key)
@@ -128,8 +123,7 @@ trait InteractsWithInput
     /**
      * Determine if the request contains an empty value for an input item.
      *
-     * @param string|array $key
-     *
+     * @param  string|array  $key
      * @return bool
      */
     public function isNotFilled($key)
@@ -148,8 +142,7 @@ trait InteractsWithInput
     /**
      * Determine if the request contains a non-empty value for any of the given inputs.
      *
-     * @param string|array $keys
-     *
+     * @param  string|array  $keys
      * @return bool
      */
     public function anyFilled($keys)
@@ -168,11 +161,10 @@ trait InteractsWithInput
     /**
      * Apply the callback if the request contains a non-empty value for the given input item key.
      *
-     * @param string $key
-     *
+     * @param  string  $key
      * @return $this|mixed
      */
-    public function whenFilled($key, callable $callback, callable $default = null)
+    public function whenFilled($key, callable $callback, ?callable $default = null)
     {
         if ($this->filled($key)) {
             return $callback(data_get($this->all(), $key)) ?: $this;
@@ -188,8 +180,7 @@ trait InteractsWithInput
     /**
      * Determine if the request is missing a given input item key.
      *
-     * @param string|array $key
-     *
+     * @param  string|array  $key
      * @return bool
      */
     public function missing($key)
@@ -202,8 +193,7 @@ trait InteractsWithInput
     /**
      * Determine if the given input key is an empty string for "has".
      *
-     * @param string $key
-     *
+     * @param  string  $key
      * @return bool
      */
     protected function isEmptyString($key)
@@ -228,9 +218,8 @@ trait InteractsWithInput
      *
      * Returns true when value is "1", "true", "on", and "yes". Otherwise, returns false.
      *
-     * @param string|null $key
-     * @param bool        $default
-     *
+     * @param  string|null  $key
+     * @param  bool  $default
      * @return bool
      */
     public function boolean($key = null, $default = false)
@@ -241,10 +230,9 @@ trait InteractsWithInput
     /**
      * Retrieve input from the request as a Carbon instance.
      *
-     * @param string      $key
-     * @param string|null $format
-     * @param string|null $tz
-     *
+     * @param  string  $key
+     * @param  string|null  $format
+     * @param  string|null  $tz
      * @return \Illuminate\Support\Carbon|null
      */
     public function date($key, $format = null, $tz = null)
@@ -263,8 +251,7 @@ trait InteractsWithInput
     /**
      * Retrieve input from the request as a collection.
      *
-     * @param array|string|null $key
-     *
+     * @param  array|string|null  $key
      * @return \Illuminate\Support\Collection
      */
     public function collect($key = null)
@@ -275,8 +262,7 @@ trait InteractsWithInput
     /**
      * Get a subset containing the provided keys with values from the input data.
      *
-     * @param array|mixed $keys
-     *
+     * @param  array|mixed  $keys
      * @return array
      */
     public function only($keys)
@@ -301,8 +287,7 @@ trait InteractsWithInput
     /**
      * Get all of the input except for a specified array of items.
      *
-     * @param array|mixed $keys
-     *
+     * @param  array|mixed  $keys
      * @return array
      */
     public function except($keys)
@@ -325,8 +310,7 @@ trait InteractsWithInput
      *
      * Order of precedence: PATH (routing placeholders or custom attributes), GET, POST
      *
-     * @param mixed $default The default value if the parameter key does not exist
-     *
+     * @param  mixed  $default  The default value if the parameter key does not exist
      * @return mixed
      */
     public function get(string $key, $default = null)
@@ -349,9 +333,8 @@ trait InteractsWithInput
     /**
      * Retrieve a request payload item from the request.
      *
-     * @param string|null       $key
-     * @param string|array|null $default
-     *
+     * @param  string|null  $key
+     * @param  string|array|null  $default
      * @return string|array|null
      */
     public function post($key = null, $default = null)
@@ -362,9 +345,8 @@ trait InteractsWithInput
     /**
      * Retrieve an input item from the request.
      *
-     * @param string|null $key
-     * @param mixed       $default
-     *
+     * @param  string|null  $key
+     * @param  mixed  $default
      * @return mixed
      */
     public function input($key = null, $default = null)
@@ -377,9 +359,8 @@ trait InteractsWithInput
     /**
      * Get the JSON payload for the request.
      *
-     * @param string|null $key
-     * @param mixed       $default
-     *
+     * @param  string|null  $key
+     * @param  mixed  $default
      * @return array|mixed
      */
     public function json($key = null, $default = null)
@@ -398,8 +379,7 @@ trait InteractsWithInput
     /**
      * Get all of the input and files for the request.
      *
-     * @param array|mixed|null $keys
-     *
+     * @param  array|mixed|null  $keys
      * @return array
      */
     public function all($keys = null)
@@ -422,9 +402,8 @@ trait InteractsWithInput
     /**
      * Retrieve a query string item from the request.
      *
-     * @param string|null       $key
-     * @param string|array|null $default
-     *
+     * @param  string|null  $key
+     * @param  string|array|null  $default
      * @return string|array|null
      */
     public function query($key = null, $default = null)
@@ -435,8 +414,7 @@ trait InteractsWithInput
     /**
      * Determine if a cookie is set on the request.
      *
-     * @param string $key
-     *
+     * @param  string  $key
      * @return bool
      */
     public function hasCookie($key)
@@ -447,9 +425,8 @@ trait InteractsWithInput
     /**
      * Retrieve a cookie from the request.
      *
-     * @param string|null       $key
-     * @param string|array|null $default
-     *
+     * @param  string|null  $key
+     * @param  string|array|null  $default
      * @return string|array|null
      */
     public function cookie($key = null, $default = null)
@@ -460,9 +437,8 @@ trait InteractsWithInput
     /**
      * Retrieve a server variable from the request.
      *
-     * @param string|null       $key
-     * @param string|array|null $default
-     *
+     * @param  string|null  $key
+     * @param  string|array|null  $default
      * @return string|array|null
      */
     public function server($key = null, $default = null)
@@ -473,8 +449,7 @@ trait InteractsWithInput
     /**
      * Determine if the uploaded data contains a file.
      *
-     * @param string $key
-     *
+     * @param  string  $key
      * @return bool
      */
     public function hasFile($key)
@@ -495,8 +470,7 @@ trait InteractsWithInput
     /**
      * Check that the given file is a valid file instance.
      *
-     * @param mixed $file
-     *
+     * @param  mixed  $file
      * @return bool
      */
     protected function isValidFile($file)
@@ -507,9 +481,8 @@ trait InteractsWithInput
     /**
      * Retrieve a file from the request.
      *
-     * @param string|null $key
-     * @param mixed       $default
-     *
+     * @param  string|null  $key
+     * @param  mixed  $default
      * @return UploadedFileInterface|UploadedFileInterface[]|array|null
      */
     public function file($key = null, $default = null)
@@ -520,10 +493,9 @@ trait InteractsWithInput
     /**
      * Retrieve a parameter item from a given source.
      *
-     * @param string            $source  the source is getServerParams, getCookieParams, getQueryParams and getParsedBody
-     * @param string            $key
-     * @param string|array|null $default
-     *
+     * @param  string  $source  the source is getServerParams, getCookieParams, getQueryParams and getParsedBody
+     * @param  string  $key
+     * @param  string|array|null  $default
      * @return string|array|null
      */
     protected function retrieveItem($source, $key, $default)
@@ -552,8 +524,7 @@ trait InteractsWithInput
     /**
      * Dump the request items and end the script.
      *
-     * @param mixed $keys
-     *
+     * @param  mixed  $keys
      * @return void
      */
     public function dd(...$keys)
@@ -566,8 +537,7 @@ trait InteractsWithInput
     /**
      * Dump the items.
      *
-     * @param mixed $keys
-     *
+     * @param  mixed  $keys
      * @return $this
      */
     public function dump($keys = [])

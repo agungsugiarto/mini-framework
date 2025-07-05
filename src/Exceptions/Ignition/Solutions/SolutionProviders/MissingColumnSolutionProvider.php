@@ -20,7 +20,7 @@ class MissingColumnSolutionProvider implements HasSolutionsForThrowable
             return false;
         }
 
-        return  $this->isBadTableErrorCode($throwable->getCode());
+        return $this->isBadTableErrorCode($throwable->getCode());
     }
 
     protected function isBadTableErrorCode(string $code): bool

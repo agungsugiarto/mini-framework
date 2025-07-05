@@ -14,7 +14,7 @@ class ViewException extends ErrorException implements ProvidesFlareContext
     protected string $view = '';
 
     /**
-     * @param array<string, mixed> $data
+     * @param  array<string, mixed>  $data
      */
     public function setViewData(array $data): void
     {
@@ -34,7 +34,7 @@ class ViewException extends ErrorException implements ProvidesFlareContext
 
     protected function dumpViewData(mixed $variable): string
     {
-        return (new HtmlDumper())->dumpVariable($variable);
+        return (new HtmlDumper)->dumpVariable($variable);
     }
 
     /** @return array<string, mixed> */

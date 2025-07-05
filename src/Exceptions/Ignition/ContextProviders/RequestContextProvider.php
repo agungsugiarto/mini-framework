@@ -14,7 +14,7 @@ class RequestContextProvider implements ContextProvider
 {
     protected ?ServerRequestInterface $request;
 
-    public function __construct(ServerRequestInterface $request = null)
+    public function __construct(?ServerRequestInterface $request = null)
     {
         $this->request = $request ?? ServerRequestFactory::fromGlobals();
     }
@@ -45,8 +45,7 @@ class RequestContextProvider implements ContextProvider
     }
 
     /**
-     * @param array<int, mixed> $files
-     *
+     * @param  array<int, mixed>  $files
      * @return array<string, string>
      */
     protected function mapFiles(array $files): array

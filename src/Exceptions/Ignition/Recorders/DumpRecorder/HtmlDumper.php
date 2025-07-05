@@ -12,7 +12,7 @@ class HtmlDumper extends BaseHtmlDumper
 
     public function dumpVariable($variable): string
     {
-        $cloner = new VarCloner();
+        $cloner = new VarCloner;
 
         $clonedData = $cloner->cloneVar($variable)->withMaxDepth(3);
 

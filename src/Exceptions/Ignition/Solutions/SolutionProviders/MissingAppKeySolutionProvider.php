@@ -20,6 +20,6 @@ class MissingAppKeySolutionProvider implements HasSolutionsForThrowable
 
     public function getSolutions(Throwable $throwable): array
     {
-        return [new GenerateAppKeySolution()];
+        return [new GenerateAppKeySolution];
     }
 }

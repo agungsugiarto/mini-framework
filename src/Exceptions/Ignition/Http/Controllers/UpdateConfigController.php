@@ -10,7 +10,7 @@ class UpdateConfigController
 {
     public function __invoke(UpdateConfigRequest $request)
     {
-        $result = (new IgnitionConfig())->saveValues($request->validated()->toArray());
+        $result = (new IgnitionConfig)->saveValues($request->validated()->toArray());
 
         return new JsonResponse($result);
     }

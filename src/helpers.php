@@ -38,9 +38,8 @@ if (! function_exists('abort')) {
     /**
      * Throw an HttpException with the given data.
      *
-     * @param int    $code
-     * @param string $message
-     *
+     * @param  int  $code
+     * @param  string  $message
      * @return void
      *
      * @throws Mini\Framework\Exceptions\HttpException
@@ -56,10 +55,9 @@ if (! function_exists('abort_if')) {
     /**
      * Throw an HttpException with the given data if the given condition is true.
      *
-     * @param bool   $boolean
-     * @param int    $code
-     * @param string $message
-     *
+     * @param  bool  $boolean
+     * @param  int  $code
+     * @param  string  $message
      * @return void
      *
      * @throws Mini\Framework\Exceptions\HttpException
@@ -77,10 +75,9 @@ if (! function_exists('abort_unless')) {
     /**
      * Throw an HttpException with the given data unless the given condition is true.
      *
-     * @param bool   $boolean
-     * @param int    $code
-     * @param string $message
-     *
+     * @param  bool  $boolean
+     * @param  int  $code
+     * @param  string  $message
      * @return void
      *
      * @throws Mini\Framework\Exceptions\HttpException
@@ -98,8 +95,7 @@ if (! function_exists('app')) {
     /**
      * Get the available container instance.
      *
-     * @param string|null $make
-     *
+     * @param  string|null  $make
      * @return mixed|Mini\Framework\Application
      */
     function app($make = null, array $parameters = [])
@@ -116,8 +112,7 @@ if (! function_exists('base_path')) {
     /**
      * Get the path to the base of the install.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     function base_path($path = '')
@@ -130,8 +125,7 @@ if (! function_exists('broadcast')) {
     /**
      * Begin broadcasting an event.
      *
-     * @param mixed|null $event
-     *
+     * @param  mixed|null  $event
      * @return Illuminate\Broadcasting\PendingBroadcast
      */
     function broadcast($event = null)
@@ -144,8 +138,7 @@ if (! function_exists('decrypt')) {
     /**
      * Decrypt the given value.
      *
-     * @param string $value
-     *
+     * @param  string  $value
      * @return string
      */
     function decrypt($value)
@@ -158,8 +151,7 @@ if (! function_exists('dispatch')) {
     /**
      * Dispatch a job to its appropriate handler.
      *
-     * @param mixed $job
-     *
+     * @param  mixed  $job
      * @return mixed
      */
     function dispatch($job)
@@ -172,9 +164,8 @@ if (! function_exists('dispatch_now')) {
     /**
      * Dispatch a command to its appropriate handler in the current process.
      *
-     * @param mixed $job
-     * @param mixed $handler
-     *
+     * @param  mixed  $job
+     * @param  mixed  $handler
      * @return mixed
      */
     function dispatch_now($job, $handler = null)
@@ -189,9 +180,8 @@ if (! function_exists('config')) {
      *
      * If an array is passed as the key, we will assume you want to set an array of values.
      *
-     * @param array|string|null $key
-     * @param mixed             $default
-     *
+     * @param  array|string|null  $key
+     * @param  mixed  $default
      * @return mixed
      */
     function config($key = null, $default = null)
@@ -212,8 +202,7 @@ if (! function_exists('database_path')) {
     /**
      * Get the path to the database directory of the install.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     function database_path($path = '')
@@ -226,8 +215,7 @@ if (! function_exists('encrypt')) {
     /**
      * Encrypt the given value.
      *
-     * @param string $value
-     *
+     * @param  string  $value
      * @return string
      */
     function encrypt($value)
@@ -240,10 +228,9 @@ if (! function_exists('event')) {
     /**
      * Dispatch an event and call the listeners.
      *
-     * @param object|string $event
-     * @param mixed         $payload
-     * @param bool          $halt
-     *
+     * @param  object|string  $event
+     * @param  mixed  $payload
+     * @param  bool  $halt
      * @return array|null
      */
     function event($event, $payload = [], $halt = false)
@@ -256,9 +243,8 @@ if (! function_exists('info')) {
     /**
      * Write some information to the log.
      *
-     * @param string $message
-     * @param array  $context
-     *
+     * @param  string  $message
+     * @param  array  $context
      * @return void
      */
     function info($message, $context = [])
@@ -271,10 +257,9 @@ if (! function_exists('redirect')) {
     /**
      * Get an instance of the redirector.
      *
-     * @param string|null $to
-     * @param int         $status
-     * @param array       $headers
-     *
+     * @param  string|null  $to
+     * @param  int  $status
+     * @param  array  $headers
      * @return Redirector|RedirectResponse
      */
     function redirect($to = null, $status = 302, $headers = [], $secure = null)
@@ -305,8 +290,7 @@ if (! function_exists('resource_path')) {
     /**
      * Get the path to the resources folder.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     function resource_path($path = '')
@@ -319,10 +303,9 @@ if (! function_exists('route')) {
     /**
      * Generate a URL to a named route.
      *
-     * @param string    $name
-     * @param array     $parameters
-     * @param bool|null $secure
-     *
+     * @param  string  $name
+     * @param  array  $parameters
+     * @param  bool|null  $secure
      * @return string
      */
     function route($name, $parameters = [], $secure = null)
@@ -337,9 +320,8 @@ if (! function_exists('session')) {
      *
      * If an array is passed as the key, we will assume you want to set an array of values.
      *
-     * @param array|string|null $key
-     * @param mixed             $default
-     *
+     * @param  array|string|null  $key
+     * @param  mixed  $default
      * @return mixed|Illuminate\Session\Store|Illuminate\Session\SessionManager
      */
     function session($key = null, $default = null)
@@ -360,8 +342,7 @@ if (! function_exists('storage_path')) {
     /**
      * Get the path to the storage folder.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     function storage_path($path = '')
@@ -374,10 +355,9 @@ if (! function_exists('trans')) {
     /**
      * Translate the given message.
      *
-     * @param string|null $id
-     * @param array       $replace
-     * @param string|null $locale
-     *
+     * @param  string|null  $id
+     * @param  array  $replace
+     * @param  string|null  $locale
      * @return Illuminate\Contracts\Translation\Translator|string|array|null
      */
     function trans($id = null, $replace = [], $locale = null)
@@ -394,10 +374,9 @@ if (! function_exists('__')) {
     /**
      * Translate the given message.
      *
-     * @param string      $key
-     * @param array       $replace
-     * @param string|null $locale
-     *
+     * @param  string  $key
+     * @param  array  $replace
+     * @param  string|null  $locale
      * @return string|array|null
      */
     function __($key, $replace = [], $locale = null)
@@ -410,10 +389,9 @@ if (! function_exists('trans_choice')) {
     /**
      * Translates the given message based on a count.
      *
-     * @param string              $id
-     * @param int|array|Countable $number
-     * @param string|null         $locale
-     *
+     * @param  string  $id
+     * @param  int|array|Countable  $number
+     * @param  string|null  $locale
      * @return string
      */
     function trans_choice($id, $number, array $replace = [], $locale = null)
@@ -426,10 +404,9 @@ if (! function_exists('url')) {
     /**
      * Generate a url for the application.
      *
-     * @param string    $path
-     * @param mixed     $parameters
-     * @param bool|null $secure
-     *
+     * @param  string  $path
+     * @param  mixed  $parameters
+     * @param  bool|null  $secure
      * @return string
      */
     function url($path = null, $parameters = [], $secure = null)
@@ -460,10 +437,9 @@ if (! function_exists('view')) {
     /**
      * Get the evaluated view contents for the given view.
      *
-     * @param string $view
-     * @param array  $data
-     * @param array  $mergeData
-     *
+     * @param  string  $view
+     * @param  array  $data
+     * @param  array  $mergeData
      * @return Illuminate\View\View
      */
     function view($view = null, $data = [], $mergeData = [])
@@ -539,15 +515,14 @@ if (! function_exists('normalizeServer')) {
      * attempts to detect the Authorization header, which is often not aggregated
      * correctly under various SAPI/httpd combinations.
      *
-     * @param callable|null $apacheRequestHeaderCallback Callback that can be used to
-     *                                                   retrieve Apache request headers. This defaults to
-     *                                                   `apache_request_headers` under the Apache mod_php.
-     *
+     * @param  callable|null  $apacheRequestHeaderCallback  Callback that can be used to
+     *                                                      retrieve Apache request headers. This defaults to
+     *                                                      `apache_request_headers` under the Apache mod_php.
      * @return array either $server verbatim, or with an added HTTP_AUTHORIZATION header
      */
     function normalizeServer(array $server, ?callable $apacheRequestHeaderCallback = null): array
     {
-        if (null === $apacheRequestHeaderCallback && is_callable('apache_request_headers')) {
+        if ($apacheRequestHeaderCallback === null && is_callable('apache_request_headers')) {
             $apacheRequestHeaderCallback = 'apache_request_headers';
         }
 
@@ -593,12 +568,11 @@ if (! function_exists('normalizeUploadedFiles')) {
         /**
          * Traverse a nested tree of uploaded file specifications.
          *
-         * @param string[]|array[]      $tmpNameTree
-         * @param int[]|array[]         $sizeTree
-         * @param int[]|array[]         $errorTree
-         * @param string[]|array[]|null $nameTree
-         * @param string[]|array[]|null $typeTree
-         *
+         * @param  string[]|array[]  $tmpNameTree
+         * @param  int[]|array[]  $sizeTree
+         * @param  int[]|array[]  $errorTree
+         * @param  string[]|array[]|null  $nameTree
+         * @param  string[]|array[]|null  $typeTree
          * @return UploadedFile[]|array[]
          */
         $recursiveNormalize = static function (
@@ -645,8 +619,7 @@ if (! function_exists('normalizeUploadedFiles')) {
          * uploaded files as produced by the php-fpm SAPI, CGI SAPI, or mod_php
          * SAPI.
          *
-         * @param array $files
-         *
+         * @param  array  $files
          * @return UploadedFile[]
          */
         $normalizeUploadedFileSpecification = static function (array $files = []) use (&$recursiveNormalize): array {
@@ -709,7 +682,7 @@ if (! function_exists('createUploadedFile')) {
     /**
      * Create an uploaded file instance from an array of values.
      *
-     * @param array $spec a single $_FILES entry
+     * @param  array  $spec  a single $_FILES entry
      *
      * @throws InvalidArgumentException if one or more of the tmp_name,
      *                                  size, or error keys are missing from $spec
@@ -740,8 +713,7 @@ if (! function_exists('createUploadedFile')) {
 
 if (! function_exists('marshalHeadersFromSapi')) {
     /**
-     * @param array $server values obtained from the SAPI (generally `$_SERVER`)
-     *
+     * @param  array  $server  values obtained from the SAPI (generally `$_SERVER`)
      * @return array Header/value pairs
      */
     function marshalHeadersFromSapi(array $server): array
@@ -806,8 +778,7 @@ if (! function_exists('parseCookieHeader')) {
      * PHP will replace special characters in cookie names, which results in other cookies not being available due to
      * overwriting. Thus, the server request should take the cookies from the request header instead.
      *
-     * @param string $cookieHeader a string cookie header value
-     *
+     * @param  string  $cookieHeader  a string cookie header value
      * @return array<non-empty-string, string> key/value cookie pairs
      */
     function parseCookieHeader($cookieHeader): array

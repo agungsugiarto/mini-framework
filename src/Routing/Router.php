@@ -37,7 +37,7 @@ class Router
     /**
      * Router constructor.
      *
-     * @param \Mini\Framework\Application $app
+     * @param  \Mini\Framework\Application  $app
      */
     public function __construct($app)
     {
@@ -79,9 +79,8 @@ class Router
     /**
      * Merge the given group attributes.
      *
-     * @param array $new
-     * @param array $old
-     *
+     * @param  array  $new
+     * @param  array  $old
      * @return array
      */
     public function mergeGroup($new, $old)
@@ -108,8 +107,7 @@ class Router
     /**
      * Merge the given group attributes with the last added group.
      *
-     * @param array $new
-     *
+     * @param  array  $new
      * @return array
      */
     protected function mergeWithLastGroup($new)
@@ -120,9 +118,8 @@ class Router
     /**
      * Format the uses prefix for the new group attributes.
      *
-     * @param array $new
-     * @param array $old
-     *
+     * @param  array  $new
+     * @param  array  $old
      * @return string|null
      */
     protected static function formatUsesPrefix($new, $old)
@@ -139,9 +136,8 @@ class Router
     /**
      * Format the prefix for the new group attributes.
      *
-     * @param array $new
-     * @param array $old
-     *
+     * @param  array  $new
+     * @param  array  $old
      * @return string|null
      */
     protected static function formatGroupPrefix($new, $old)
@@ -158,10 +154,9 @@ class Router
     /**
      * Add a route to the collection.
      *
-     * @param array|string $method
-     * @param string       $uri
-     * @param mixed        $action
-     *
+     * @param  array|string  $method
+     * @param  string  $uri
+     * @param  mixed  $action
      * @return void
      */
     public function addRoute($method, $uri, $action)
@@ -204,8 +199,7 @@ class Router
     /**
      * Parse the action into an array format.
      *
-     * @param mixed $action
-     *
+     * @param  mixed  $action
      * @return array
      */
     protected function parseAction($action)
@@ -255,8 +249,7 @@ class Router
     /**
      * Merge the namespace group into the action.
      *
-     * @param string $namespace
-     *
+     * @param  string  $namespace
      * @return array
      */
     protected function mergeNamespaceGroup(array $action, $namespace = null)
@@ -271,9 +264,8 @@ class Router
     /**
      * Prepend the namespace onto the use clause.
      *
-     * @param string $class
-     * @param string $namespace
-     *
+     * @param  string  $class
+     * @param  string  $namespace
      * @return string
      */
     protected function prependGroupNamespace($class, $namespace = null)
@@ -285,8 +277,7 @@ class Router
     /**
      * Merge the middleware group into the action.
      *
-     * @param array $middleware
-     *
+     * @param  array  $middleware
      * @return array
      */
     protected function mergeMiddlewareGroup(array $action, $middleware = null)
@@ -305,8 +296,7 @@ class Router
     /**
      * Merge the as group into the action.
      *
-     * @param string $as
-     *
+     * @param  string  $as
      * @return array
      */
     protected function mergeAsGroup(array $action, $as = null)
@@ -325,9 +315,8 @@ class Router
     /**
      * Register a route with the application.
      *
-     * @param string $uri
-     * @param mixed  $action
-     *
+     * @param  string  $uri
+     * @param  mixed  $action
      * @return $this
      */
     public function head($uri, $action)
@@ -340,9 +329,8 @@ class Router
     /**
      * Register a route with the application.
      *
-     * @param string $uri
-     * @param mixed  $action
-     *
+     * @param  string  $uri
+     * @param  mixed  $action
      * @return $this
      */
     public function get($uri, $action)
@@ -355,9 +343,8 @@ class Router
     /**
      * Register a route with the application.
      *
-     * @param string $uri
-     * @param mixed  $action
-     *
+     * @param  string  $uri
+     * @param  mixed  $action
      * @return $this
      */
     public function post($uri, $action)
@@ -370,9 +357,8 @@ class Router
     /**
      * Register a route with the application.
      *
-     * @param string $uri
-     * @param mixed  $action
-     *
+     * @param  string  $uri
+     * @param  mixed  $action
      * @return $this
      */
     public function put($uri, $action)
@@ -385,9 +371,8 @@ class Router
     /**
      * Register a route with the application.
      *
-     * @param string $uri
-     * @param mixed  $action
-     *
+     * @param  string  $uri
+     * @param  mixed  $action
      * @return $this
      */
     public function patch($uri, $action)
@@ -400,9 +385,8 @@ class Router
     /**
      * Register a route with the application.
      *
-     * @param string $uri
-     * @param mixed  $action
-     *
+     * @param  string  $uri
+     * @param  mixed  $action
      * @return $this
      */
     public function delete($uri, $action)
@@ -415,9 +399,8 @@ class Router
     /**
      * Register a route with the application.
      *
-     * @param string $uri
-     * @param mixed  $action
-     *
+     * @param  string  $uri
+     * @param  mixed  $action
      * @return $this
      */
     public function options($uri, $action)

@@ -29,16 +29,16 @@ class ServerRequest extends BaseServerRequest
     protected $routeResolver;
 
     /**
-     * @param array                           $serverParams  Server parameters, typically from $_SERVER
-     * @param array                           $uploadedFiles Upload file information, a tree of UploadedFiles
-     * @param string|UriInterface|null        $uri           URI for the request, if any
-     * @param string|null                     $method        HTTP method for the request, if any
-     * @param string|resource|StreamInterface $body          message body, if any
-     * @param array                           $headers       headers for the message, if any
-     * @param array                           $cookieParams  cookies for the message, if any
-     * @param array                           $queryParams   query params for the message, if any
-     * @param array|object|null               $parsedBody    the deserialized body parameters, if any
-     * @param string                          $protocol      HTTP protocol version
+     * @param  array  $serverParams  Server parameters, typically from $_SERVER
+     * @param  array  $uploadedFiles  Upload file information, a tree of UploadedFiles
+     * @param  string|UriInterface|null  $uri  URI for the request, if any
+     * @param  string|null  $method  HTTP method for the request, if any
+     * @param  string|resource|StreamInterface  $body  message body, if any
+     * @param  array  $headers  headers for the message, if any
+     * @param  array  $cookieParams  cookies for the message, if any
+     * @param  array  $queryParams  query params for the message, if any
+     * @param  array|object|null  $parsedBody  the deserialized body parameters, if any
+     * @param  string  $protocol  HTTP protocol version
      *
      * @throws InvalidArgumentException for any invalid value
      */
@@ -71,8 +71,7 @@ class ServerRequest extends BaseServerRequest
     /**
      * Determine if the route name matches a given pattern.
      *
-     * @param mixed $patterns
-     *
+     * @param  mixed  $patterns
      * @return bool
      */
     public function routeIs(...$patterns)
@@ -93,9 +92,8 @@ class ServerRequest extends BaseServerRequest
     /**
      * Get the route handling the request.
      *
-     * @param string|null $param
-     * @param mixed       $default
-     *
+     * @param  string|null  $param
+     * @param  mixed  $default
      * @return array|string
      */
     public function route($param = null, $default = null)

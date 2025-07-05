@@ -2,10 +2,11 @@
 
 namespace Mini\Framework\Exceptions\Ignition\Support\Composer;
 
-use function base_path;
 use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+
+use function base_path;
 
 class ComposerClassMap
 {
@@ -20,7 +21,7 @@ class ComposerClassMap
 
         $this->composer = file_exists($autoloaderPath)
             ? require $autoloaderPath
-            : new FakeComposer();
+            : new FakeComposer;
 
         $this->basePath = app()->basePath('app');
     }

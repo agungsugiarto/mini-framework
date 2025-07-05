@@ -141,7 +141,7 @@ class Validator extends BaseValidator
      */
     protected function isValidFile(UploadedFileInterface $file)
     {
-        return \UPLOAD_ERR_OK === $file->getError() && is_uploaded_file($file->getStream()->getMetadata('uri'));
+        return $file->getError() === \UPLOAD_ERR_OK && is_uploaded_file($file->getStream()->getMetadata('uri'));
     }
 
     /**
