@@ -2,7 +2,9 @@
 
 namespace Mini\Framework\Http\Middleware;
 
+use Closure;
 use Illuminate\Container\Container;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use ReflectionClass;
 
@@ -16,14 +18,14 @@ class MiddlewareTransformer
     /**
      * Transform middleware to work with Laravel Pipeline using PSR-15 pattern.
      */
-    public function transform(array $middleware): array
+    public function transform(array $middlewares): array
     {
         return array_map(
-            fn ($middlewareName) => fn ($request, $next) => $this->resolveMiddleware($middlewareName)->process(
+            fn ($middleware) => fn (RequestInterface $request, Closure $next) => $this->resolveMiddleware($middleware)->process(
                 $request,
                 new PipelineRequestHandler($next)
             ),
-            $middleware
+            $middlewares
         );
     }
 

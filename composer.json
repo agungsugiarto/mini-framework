@@ -81,8 +81,8 @@
     "scripts": {
         "test": "phpunit",
         "test-coverage": "phpunit --coverage-html coverage",
-        "lint": "pint",
-        "lint-fix": "pint --fix"
+        "lint": "pint --test",
+        "lint-fix": "pint"
     },
     "extra": {
         "branch-alias": {
