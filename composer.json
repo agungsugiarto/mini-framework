@@ -64,7 +64,8 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.4.4",
-        "phpunit/phpunit": "^9.5.8"
+        "phpunit/phpunit": "^9.5.8",
+        "laravel/pint": "^1.20"
     },
     "suggest": {
         "laravel/tinker": "Required to use the tinker console command (^2.7)."

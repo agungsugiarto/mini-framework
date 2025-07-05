@@ -20,6 +20,7 @@ use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use Mini\Framework\Exceptions\HttpResponseException;
 use Mini\Framework\Exceptions\MethodNotAllowedHttpException;
 use Mini\Framework\Exceptions\NotFoundHttpException;
+use Mini\Framework\Http\Middleware\MiddlewareTransformer;
 use Mini\Framework\Http\ServerRequest;
 use Mini\Framework\Http\ServerRequestFactory;
 use Mini\Framework\Routing\Controller;
@@ -63,6 +64,13 @@ trait RoutesRequests
      * @var Dispatcher
      */
     protected $dispatcher;
+
+    /**
+     * The middleware transformer instance.
+     *
+     * @var MiddlewareTransformer
+     */
+    protected $middlewareTransformer;
 
     /**
      * Add new middleware to the application.
@@ -132,7 +140,7 @@ trait RoutesRequests
                 continue;
             }
 
-            $instance = $this->resolveMiddleware($middleware);
+            $instance = $this->getMiddlewareTransformer()->resolveMiddleware($middleware);
 
             if (method_exists($instance, 'terminate')) {
                 $instance->terminate($this->make('request'), $response);
@@ -155,8 +163,8 @@ trait RoutesRequests
                 $this->instance(ServerRequestInterface::class, $request);
                 $this->instance(ServerRequest::class, $request);
 
-                if (isset($this->router->getRoutes()[$method.$pathInfo])) {
-                    return $this->handleFoundRoute([true, $this->router->getRoutes()[$method.$pathInfo]['action'], []]);
+                if (isset($this->router->getRoutes()[$method . $pathInfo])) {
+                    return $this->handleFoundRoute([true, $this->router->getRoutes()[$method . $pathInfo]['action'], []]);
                 }
 
                 return $this->handleDispatcherResponse(
@@ -179,7 +187,7 @@ trait RoutesRequests
         $this->instance(ServerRequestInterface::class, $request);
         $this->instance(ServerRequest::class, $request);
 
-        return [$request->getMethod(), '/'.trim($request->getUri()->getPath(), '/')];
+        return [$request->getMethod(), '/' . trim($request->getUri()->getPath(), '/')];
     }
 
     /**
@@ -321,7 +329,8 @@ trait RoutesRequests
             return $this->callController($instance, $method, $routeInfo);
         } else {
             return $this->callControllerCallable(
-                [$instance, $method], $routeInfo[2]
+                [$instance, $method],
+                $routeInfo[2]
             );
         }
     }
@@ -341,11 +350,15 @@ trait RoutesRequests
 
         if (count($middleware) > 0) {
             return $this->callControllerWithMiddleware(
-                $instance, $method, $routeInfo, $middleware
+                $instance,
+                $method,
+                $routeInfo,
+                $middleware
             );
         } else {
             return $this->callControllerCallable(
-                [$instance, $method], $routeInfo[2]
+                [$instance, $method],
+                $routeInfo[2]
             );
         }
     }
@@ -399,7 +412,7 @@ trait RoutesRequests
         return array_map(function ($name) {
             [$name, $parameters] = array_pad(explode(':', $name, 2), 2, null);
 
-            return Arr::get($this->routeMiddleware, $name, $name).($parameters ? ':'.$parameters : '');
+            return Arr::get($this->routeMiddleware, $name, $name) . ($parameters ? ':' . $parameters : '');
         }, $middleware);
     }
 
@@ -413,28 +426,12 @@ trait RoutesRequests
         if (count($middleware) > 0 && ! $this->shouldSkipMiddleware()) {
             $request = $this->make('request');
 
-            // Transform middleware to work with Laravel Pipeline using PSR-15 pattern
-            $transformedMiddleware = array_map(fn ($middlewareName) => fn ($request, $next) => $this->resolveMiddleware($middlewareName)->process(
-                $request,
-                new class($next) implements RequestHandlerInterface
-                {
-                    public function __construct(private $next)
-                    {
-                    }
-
-                    public function handle(ServerRequestInterface $request): ResponseInterface
-                    {
-                        return ($this->next)($request);
-                    }
-                }
-            ),
-                $middleware
-            );
+            $transformedMiddleware = $this->getMiddlewareTransformer()->transform($middleware);
 
             return (new Pipeline($this))
                 ->send($request)
                 ->through($transformedMiddleware)
-                ->then(fn (ServerRequestInterface $request): ResponseInterface => $then($request));
+                ->then(fn(ServerRequestInterface $request): ResponseInterface => $then($request));
         }
 
         return $then($this->make('request'));
@@ -492,30 +489,16 @@ trait RoutesRequests
     }
 
     /**
-     * Resolve middleware instance from middleware name.
+     * Get the middleware transformer instance.
      *
-     * @return object
+     * @return MiddlewareTransformer
      */
-    protected function resolveMiddleware(string $middlewareName)
+    protected function getMiddlewareTransformer()
     {
-        [$class, $parameterString] = array_pad(explode(':', $middlewareName, 2), 2, null);
-
-        if (! $parameterString) {
-            return $this->make($class);
+        if (! $this->middlewareTransformer) {
+            $this->middlewareTransformer = new MiddlewareTransformer($this);
         }
 
-        $parameterValues = explode(',', $parameterString);
-
-        $parameterNames = array_map(
-            fn ($param) => $param->getName(),
-            (new ReflectionClass($class))->getConstructor()?->getParameters() ?? []
-        );
-
-        $parameters = array_combine(
-            array_slice($parameterNames, 0, count($parameterValues)),
-            $parameterValues
-        );
-
-        return $this->makeWith($class, $parameters);
+        return $this->middlewareTransformer;
     }
 }
