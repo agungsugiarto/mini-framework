@@ -20,13 +20,14 @@ class MiddlewareTransformer
      */
     public function transform(array $middlewares): array
     {
-        return array_map(
-            fn ($middleware) => fn (RequestInterface $request, Closure $next) => $this->resolveMiddleware($middleware)->process(
-                $request,
-                new PipelineRequestHandler($next)
-            ),
-            $middlewares
-        );
+        return array_map(function ($middleware) {
+            return function (RequestInterface $request, Closure $next) use ($middleware) {
+                return $this->resolveMiddleware($middleware)->process(
+                    $request,
+                    new PipelineRequestHandler($next)
+                );
+            };
+        }, $middlewares);
     }
 
     /**

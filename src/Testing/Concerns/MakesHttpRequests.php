@@ -380,7 +380,7 @@ trait MakesHttpRequests
      * @param  array  $cookies
      * @param  array  $files
      * @param  array  $server
-     * @param  string  $content
+     * @param  array  $content
      * @return \Illuminate\Testing\TestResponse
      */
     public function call($method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
@@ -393,9 +393,7 @@ trait MakesHttpRequests
             $content,
             $cookies,
             $files
-        )
-            ->withMethod($method)
-            ->withUri((new UriFactory)->createUri($uri));
+        )->withMethod($method)->withUri((new UriFactory)->createUri($uri));
 
         return $this->response = $this->app->prepareResponse($this->app->handle($this->app['request']));
     }
